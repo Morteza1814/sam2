@@ -3,7 +3,7 @@
 
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
-
+import sys
 import warnings
 from collections import OrderedDict
 
@@ -15,6 +15,40 @@ from tqdm import tqdm
 from sam2.modeling.sam2_base import NO_OBJ_SCORE, SAM2Base
 from sam2.utils.misc import concat_points, fill_holes_in_mask_scores, load_video_frames
 
+def get_total_size(obj, seen=None):
+    """Recursively finds the total size of an object including its nested objects."""
+    if seen is None:
+        seen = set()
+    
+    obj_id = id(obj)
+    if obj_id in seen:
+        return 0  # Avoid double-counting the same object
+    seen.add(obj_id)
+    
+    size = sys.getsizeof(obj)
+    
+    # Recursively check for nested objects
+    if isinstance(obj, dict):
+        size += sum(get_total_size(k, seen) for k in obj.keys())
+        size += sum(get_total_size(v, seen) for v in obj.values())
+    elif isinstance(obj, (list, tuple, set, frozenset)):
+        size += sum(get_total_size(item, seen) for item in obj)
+    # elif hasattr(obj, '__dict__'):
+    #     size += get_total_size(vars(obj), seen)
+    # elif hasattr(obj, '__slots__'):
+    #     size += sum(get_total_size(getattr(obj, slot), seen) for slot in obj.__slots__ if hasattr(obj, slot))
+
+    return size
+
+
+def get_dict_shape(d):
+    """Returns the 'shape' of a nested dictionary structure."""
+    if isinstance(d, dict):
+        return {k: get_dict_shape(v) for k, v in d.items()}
+    elif isinstance(d, (list, tuple, set)):
+        return f"{type(d).__name__} of length {len(d)}"
+    else:
+        return type(d).__name__
 
 class SAM2VideoPredictor(SAM2Base):
     """The predictor class to handle user interactions and manage inference states."""
@@ -521,6 +555,7 @@ class SAM2VideoPredictor(SAM2Base):
                         out["maskmem_pos_enc"] = maskmem_pos_enc
 
                     obj_output_dict[storage_key][frame_idx] = out
+
                     if self.clear_non_cond_mem_around_input:
                         # clear non-conditioning memory of the surrounding frames
                         self._clear_obj_non_cond_mem_around_input(
@@ -612,6 +647,11 @@ class SAM2VideoPredictor(SAM2Base):
                         run_mem_encoder=True,
                     )
                     obj_output_dict[storage_key][frame_idx] = current_out
+
+                # morteza
+                total_size = get_total_size(obj_output_dict)
+                # print(f"prop-Total allocated memory size (obj_output_dict): {total_size} bytes")
+                # morteza
 
                 inference_state["frames_tracked_per_obj"][obj_idx][frame_idx] = {
                     "reverse": reverse
@@ -777,6 +817,7 @@ class SAM2VideoPredictor(SAM2Base):
         # optionally offload the output to CPU memory to save GPU space
         storage_device = inference_state["storage_device"]
         maskmem_features = current_out["maskmem_features"]
+        
         if maskmem_features is not None:
             maskmem_features = maskmem_features.to(torch.bfloat16)
             maskmem_features = maskmem_features.to(storage_device, non_blocking=True)

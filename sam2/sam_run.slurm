@@ -3,8 +3,8 @@
 #SBATCH --partition=gpu
 #SBATCH --gpus=1
 #SBATCH --job-name=sam_run
-#SBATCH --mem=400000
-#SBATCH --time=4-00:00:00
+#SBATCH --mem=50000
+#SBATCH --time=00:20:00
 #SBATCH --output=sam_run.txt
 #SBATCH --error=sam_run.txt
 
