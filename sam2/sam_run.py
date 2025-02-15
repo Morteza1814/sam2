@@ -73,54 +73,6 @@ predictor = build_sam2_video_predictor(model_cfg, checkpoint)
 #     if isinstance(layer, (torch.nn.Linear, torch.nn.Conv2d, torch.nn.MultiheadAttention, torch.nn.LayerNorm, torch.nn.ReLU, torch.nn.Sigmoid)):
 #         layer.register_forward_hook(shape_memory_hook)
 
-
-# before_allocated = 0
-# max_allocated = 0
-# def cross_attn_sub_layer_memory_hook(module, name, isStart):
-#     global before_allocated
-#     global max_allocated
-#     try:
-#         if module is None:
-#             print(f" Skipping hook for {name} because the module is None!")
-#             return
-
-#         # print(f"\n Cross-Attention Sub-Layer: {name}")
-#         if isStart == False:
-#             torch.cuda.synchronize()  # Ensure accurate memory readings
-#             after_allocated = torch.cuda.memory_allocated()  # MB
-#             # print(f" After Execution: {after_allocated} ")
-#             # Compute memory used specifically by this sub-layer
-#             layer_memory = after_allocated - before_allocated
-#             if layer_memory > max_allocated:
-#                 max_allocated = layer_memory
-#         else:
-#             before_allocated = torch.cuda.memory_allocated()  # MB
-#             # print(f" Before Execution: {before_allocated} ")
-#             torch.cuda.synchronize()  # Ensure accurate memory readings
-#     except Exception as e:
-#         print(f" Hook execution failed for {name}: {e}")
-
-# def hookRegisterar(predictor, layerName, subLayerStartName, subLayerEndName):
-#     # Find and attach hooks to all `memory_attention.layers.X.cross_attn_image.Y` layers
-#     for name, mod in predictor.named_modules():
-#         if layerName in name:
-#             if mod is not None:
-#                 try:
-#                     if(subLayerStartName in name):
-#                         mod.register_forward_hook(lambda module, _, __: cross_attn_sub_layer_memory_hook(module, name, True))
-#                         print(f" Hook registered on: {name}")
-#                     if(subLayerEndName in name):
-#                         mod.register_forward_hook(lambda module, _, __: cross_attn_sub_layer_memory_hook(module, name, False))
-#                         print(f" Hook registered on: {name}")
-#                 except Exception as e:
-#                     print(f" Failed to register hook on {name}: {e}")
-#             else:
-#                 print(f" Skipping hook registration for {name} because module is None!")
-
-
-# hookRegisterar(predictor, "memory_attention.layers.", "cross_attn_image.q_proj", "cross_attn_image.out_proj")
-
-
 def cross_attn_sub_layer_memory_hook(module, name, is_start, memory_records, index):
     try:
         if module is None:
@@ -159,12 +111,22 @@ def hook_registerar(predictor, layers):
 
 # Example Usage:
 layers = [
-    ("memory_attention.layers.", "self_attn.q_proj", "self_attn.out_proj"),
-    ("memory_attention.layers.", "cross_attn_image.q_proj", "cross_attn_image.out_proj"),
-    ("sam_mask_decoder.transformer.layers.", "self_attn.q_proj", "self_attn.out_proj"),
-    ("sam_mask_decoder.transformer.layers.", "cross_attn_token_to_image.q_proj", "cross_attn_token_to_image.out_proj"),
-    ("sam_mask_decoder.transformer.layers.", "cross_attn_image_to_token.q_proj", "cross_attn_image_to_token.out_proj"),
-    ("image_encoder.trunk.blocks.", "qkv", "proj"),
+    # memory attention
+    ("memory_attention.layers.", "norm1", "self_attn.out_proj"), # self attention
+    ("memory_attention.layers.", "norm2", "cross_attn_image.out_proj"), # cross attention
+    ("memory_attention.layers.", "norm3", "linear2"), # linear layers
+    # mask decoder
+    ("sam_mask_decoder.transformer.layers.", "self_attn.q_proj", "self_attn.out_proj"), # self attention
+    ("sam_mask_decoder.transformer.layers.", "norm1", "cross_attn_token_to_image.out_proj"), # cross_attn_token_to_image
+    ("sam_mask_decoder.transformer.layers.", "norm2", "mlp.layers.1"), # mlp layers
+    ("sam_mask_decoder.transformer.layers.", "norm3", "cross_attn_image_to_token.out_proj"), # cross_attn_image_to_token
+    # image encoder
+    ("image_encoder.trunk.blocks.", "norm1", "proj"), # qkv and proj
+    ("image_encoder.trunk.blocks.", "norm2", "mlp.layers.1"), # MLP layers
+    ("image_encoder.neck.convs.", "0.conv", "3.conv"), # final CONV layers
+    # memory encoder
+    ("memory_encoder.mask_downsampler.", "encoder.0", "encoder.12"), # mask downsampler
+    ("memory_encoder.fuser.layers.", "0.dwconv", "1.pwconv2"), # conv
 ]
 
 memory_records = hook_registerar(predictor, layers)
