@@ -1,0 +1,258 @@
+
+[Before Init State] GPU Memory Usage
+Allocated: 1049.53 MB
+Max Allocated: 1049.53 MB
+Reserved: 1103.10 MB
+Max Reserved: 1103.10 MB
+
+frame loading (JPEG):   0%|          | 0/200 [00:00<?, ?it/s]frame loading (JPEG):   2%|▏         | 3/200 [00:00<00:08, 23.93it/s]frame loading (JPEG):   3%|▎         | 6/200 [00:00<00:07, 26.99it/s]frame loading (JPEG):   4%|▍         | 9/200 [00:00<00:06, 28.20it/s]frame loading (JPEG):   6%|▌         | 12/200 [00:00<00:06, 28.74it/s]frame loading (JPEG):   8%|▊         | 15/200 [00:00<00:06, 29.09it/s]frame loading (JPEG):   9%|▉         | 18/200 [00:00<00:06, 29.27it/s]frame loading (JPEG):  10%|█         | 21/200 [00:00<00:06, 29.48it/s]frame loading (JPEG):  12%|█▏        | 24/200 [00:00<00:05, 29.54it/s]frame loading (JPEG):  14%|█▎        | 27/200 [00:00<00:05, 29.58it/s]frame loading (JPEG):  15%|█▌        | 30/200 [00:01<00:05, 29.63it/s]frame loading (JPEG):  16%|█▋        | 33/200 [00:01<00:05, 29.69it/s]frame loading (JPEG):  18%|█▊        | 36/200 [00:01<00:05, 29.67it/s]frame loading (JPEG):  20%|█▉        | 39/200 [00:01<00:05, 29.68it/s]frame loading (JPEG):  21%|██        | 42/200 [00:01<00:05, 29.64it/s]frame loading (JPEG):  22%|██▎       | 45/200 [00:01<00:05, 29.63it/s]frame loading (JPEG):  24%|██▍       | 48/200 [00:01<00:05, 29.68it/s]frame loading (JPEG):  26%|██▌       | 51/200 [00:01<00:05, 29.72it/s]frame loading (JPEG):  27%|██▋       | 54/200 [00:01<00:04, 29.75it/s]frame loading (JPEG):  28%|██▊       | 57/200 [00:01<00:04, 29.77it/s]frame loading (JPEG):  30%|███       | 60/200 [00:02<00:04, 29.72it/s]frame loading (JPEG):  32%|███▏      | 63/200 [00:02<00:04, 29.50it/s]frame loading (JPEG):  33%|███▎      | 66/200 [00:02<00:04, 29.53it/s]frame loading (JPEG):  34%|███▍      | 69/200 [00:02<00:04, 29.61it/s]frame loading (JPEG):  36%|███▌      | 72/200 [00:02<00:04, 29.61it/s]frame loading (JPEG):  38%|███▊      | 75/200 [00:02<00:04, 29.62it/s]frame loading (JPEG):  39%|███▉      | 78/200 [00:02<00:04, 29.62it/s]frame loading (JPEG):  40%|████      | 81/200 [00:02<00:04, 29.67it/s]frame loading (JPEG):  42%|████▏     | 84/200 [00:02<00:03, 29.66it/s]frame loading (JPEG):  44%|████▎     | 87/200 [00:02<00:03, 29.62it/s]frame loading (JPEG):  45%|████▌     | 90/200 [00:03<00:03, 29.61it/s]frame loading (JPEG):  46%|████▋     | 93/200 [00:03<00:03, 29.69it/s]frame loading (JPEG):  48%|████▊     | 96/200 [00:03<00:03, 29.67it/s]frame loading (JPEG):  50%|████▉     | 99/200 [00:03<00:03, 29.69it/s]frame loading (JPEG):  51%|█████     | 102/200 [00:03<00:03, 29.68it/s]frame loading (JPEG):  52%|█████▎    | 105/200 [00:03<00:03, 29.69it/s]frame loading (JPEG):  54%|█████▍    | 108/200 [00:03<00:03, 29.67it/s]frame loading (JPEG):  56%|█████▌    | 111/200 [00:03<00:02, 29.69it/s]frame loading (JPEG):  57%|█████▋    | 114/200 [00:03<00:02, 29.65it/s]frame loading (JPEG):  58%|█████▊    | 117/200 [00:03<00:02, 29.63it/s]frame loading (JPEG):  60%|██████    | 120/200 [00:04<00:02, 29.66it/s]frame loading (JPEG):  62%|██████▏   | 123/200 [00:04<00:02, 29.68it/s]frame loading (JPEG):  63%|██████▎   | 126/200 [00:04<00:02, 29.67it/s]frame loading (JPEG):  64%|██████▍   | 129/200 [00:04<00:02, 29.68it/s]frame loading (JPEG):  66%|██████▌   | 132/200 [00:04<00:02, 29.69it/s]frame loading (JPEG):  68%|██████▊   | 135/200 [00:04<00:02, 29.71it/s]frame loading (JPEG):  69%|██████▉   | 138/200 [00:04<00:02, 29.73it/s]frame loading (JPEG):  70%|███████   | 141/200 [00:04<00:01, 29.79it/s]frame loading (JPEG):  72%|███████▏  | 144/200 [00:04<00:01, 29.35it/s]frame loading (JPEG):  74%|███████▎  | 147/200 [00:04<00:01, 29.40it/s]frame loading (JPEG):  75%|███████▌  | 150/200 [00:05<00:01, 29.45it/s]frame loading (JPEG):  76%|███████▋  | 153/200 [00:05<00:01, 29.59it/s]frame loading (JPEG):  78%|███████▊  | 156/200 [00:05<00:01, 29.64it/s]frame loading (JPEG):  80%|███████▉  | 159/200 [00:05<00:01, 29.67it/s]frame loading (JPEG):  81%|████████  | 162/200 [00:05<00:01, 29.65it/s]frame loading (JPEG):  82%|████████▎ | 165/200 [00:05<00:01, 29.62it/s]frame loading (JPEG):  84%|████████▍ | 168/200 [00:05<00:01, 29.64it/s]frame loading (JPEG):  86%|████████▌ | 171/200 [00:05<00:00, 29.67it/s]frame loading (JPEG):  87%|████████▋ | 174/200 [00:05<00:00, 29.67it/s]frame loading (JPEG):  88%|████████▊ | 177/200 [00:05<00:00, 29.60it/s]frame loading (JPEG):  90%|█████████ | 180/200 [00:06<00:00, 29.16it/s]frame loading (JPEG):  92%|█████████▏| 183/200 [00:06<00:00, 29.23it/s]frame loading (JPEG):  93%|█████████▎| 186/200 [00:06<00:00, 29.31it/s]frame loading (JPEG):  94%|█████████▍| 189/200 [00:06<00:00, 29.41it/s]frame loading (JPEG):  96%|█████████▌| 192/200 [00:06<00:00, 29.50it/s]frame loading (JPEG):  98%|█████████▊| 195/200 [00:06<00:00, 29.56it/s]frame loading (JPEG):  99%|█████████▉| 198/200 [00:06<00:00, 29.60it/s]frame loading (JPEG): 100%|██████████| 200/200 [00:06<00:00, 29.52it/s]
+/u/rgq5aw/GIT/sam2/sam2/sam2_video_predictor.py:834: UserWarning: cannot import name '_C' from 'sam2' (/u/rgq5aw/GIT/sam2/sam2/__init__.py)
+
+Skipping the post-processing step due to the error above. You can still use SAM 2 and it's OK to ignore the error above, although some post-processing functionality may be limited (which doesn't affect the results in most cases; see https://github.com/facebookresearch/sam2/blob/main/INSTALL.md).
+  pred_masks_gpu = fill_holes_in_mask_scores(
+
+[After Init State] GPU Memory Usage
+Allocated: 4064.57 MB
+Max Allocated: 4227.34 MB
+Reserved: 4326.42 MB
+Max Reserved: 4326.42 MB
+
+
+[Before Add New Points] GPU Memory Usage
+Allocated: 4064.57 MB
+Max Allocated: 4227.34 MB
+Reserved: 4326.42 MB
+Max Reserved: 4326.42 MB
+
+
+[After Add New Points] GPU Memory Usage
+Allocated: 4076.49 MB
+Max Allocated: 4227.34 MB
+Reserved: 4332.72 MB
+Max Reserved: 4332.72 MB
+
+
+[Before Video Propagation] GPU Memory Usage
+Allocated: 4076.49 MB
+Max Allocated: 4227.34 MB
+Reserved: 4332.72 MB
+Max Reserved: 4332.72 MB
+
+Total allocated memory size: 1722 bytes
+Total allocated memory size (obj_temp_output_dict): 1722 bytes
+{'cond_frame_outputs': {0: {'maskmem_features': 'Tensor', 'maskmem_pos_enc': 'list of length 1', 'pred_masks': 'Tensor', 'obj_ptr': 'Tensor', 'object_score_logits': 'Tensor'}}, 'non_cond_frame_outputs': {}}
+propagate in video:   0%|          | 0/200 [00:00<?, ?it/s]propagate in video:   1%|          | 2/200 [00:00<00:10, 18.59it/s]propagate in video:   2%|▏         | 4/200 [00:00<00:15, 12.30it/s]propagate in video:   3%|▎         | 6/200 [00:00<00:17, 10.94it/s]propagate in video:   4%|▍         | 8/200 [00:00<00:18, 10.26it/s]propagate in video:   5%|▌         | 10/200 [00:00<00:19,  9.89it/s]propagate in video:   6%|▌         | 12/200 [00:01<00:19,  9.64it/s]propagate in video:   6%|▋         | 13/200 [00:01<00:19,  9.55it/s]propagate in video:   7%|▋         | 14/200 [00:01<00:19,  9.49it/s]propagate in video:   8%|▊         | 15/200 [00:01<00:19,  9.43it/s]propagate in video:   8%|▊         | 16/200 [00:01<00:19,  9.37it/s]propagate in video:   8%|▊         | 17/200 [00:01<00:19,  9.35it/s]propagate in video:   9%|▉         | 18/200 [00:01<00:19,  9.31it/s]propagate in video:  10%|▉         | 19/200 [00:01<00:19,  9.29it/s]propagate in video:  10%|█         | 20/200 [00:02<00:19,  9.26it/s]propagate in video:  10%|█         | 21/200 [00:02<00:19,  9.24it/s]propagate in video:  11%|█         | 22/200 [00:02<00:19,  9.22it/s]propagate in video:  12%|█▏        | 23/200 [00:02<00:19,  9.22it/s]propagate in video:  12%|█▏        | 24/200 [00:02<00:19,  9.23it/s]propagate in video:  12%|█▎        | 25/200 [00:02<00:18,  9.23it/s]propagate in video:  13%|█▎        | 26/200 [00:02<00:18,  9.23it/s]propagate in video:  14%|█▎        | 27/200 [00:02<00:18,  9.23it/s]propagate in video:  14%|█▍        | 28/200 [00:02<00:18,  9.23it/s]propagate in video:  14%|█▍        | 29/200 [00:03<00:18,  9.23it/s]propagate in video:  15%|█▌        | 30/200 [00:03<00:18,  9.21it/s]propagate in video:  16%|█▌        | 31/200 [00:03<00:18,  9.21it/s]propagate in video:  16%|█▌        | 32/200 [00:03<00:18,  9.20it/s]propagate in video:  16%|█▋        | 33/200 [00:03<00:18,  9.21it/s]propagate in video:  17%|█▋        | 34/200 [00:03<00:18,  9.21it/s]propagate in video:  18%|█▊        | 35/200 [00:03<00:17,  9.21it/s]propagate in video:  18%|█▊        | 36/200 [00:03<00:17,  9.22it/s]propagate in video:  18%|█▊        | 37/200 [00:03<00:17,  9.21it/s]propagate in video:  19%|█▉        | 38/200 [00:03<00:17,  9.22it/s]propagate in video:  20%|█▉        | 39/200 [00:04<00:17,  9.20it/s]propagate in video:  20%|██        | 40/200 [00:04<00:17,  9.20it/s]propagate in video:  20%|██        | 41/200 [00:04<00:17,  9.20it/s]propagate in video:  21%|██        | 42/200 [00:04<00:17,  9.20it/s]propagate in video:  22%|██▏       | 43/200 [00:04<00:17,  9.21it/s]propagate in video:  22%|██▏       | 44/200 [00:04<00:16,  9.21it/s]propagate in video:  22%|██▎       | 45/200 [00:04<00:16,  9.22it/s]propagate in video:  23%|██▎       | 46/200 [00:04<00:16,  9.20it/s]propagate in video:  24%|██▎       | 47/200 [00:04<00:16,  9.21it/s]propagate in video:  24%|██▍       | 48/200 [00:05<00:16,  9.20it/s]propagate in video:  24%|██▍       | 49/200 [00:05<00:16,  9.19it/s]propagate in video:  25%|██▌       | 50/200 [00:05<00:16,  9.20it/s]propagate in video:  26%|██▌       | 51/200 [00:05<00:16,  9.21it/s]propagate in video:  26%|██▌       | 52/200 [00:05<00:16,  9.23it/s]propagate in video:  26%|██▋       | 53/200 [00:05<00:15,  9.25it/s]propagate in video:  27%|██▋       | 54/200 [00:05<00:15,  9.25it/s]propagate in video:  28%|██▊       | 55/200 [00:05<00:15,  9.25it/s]propagate in video:  28%|██▊       | 56/200 [00:05<00:15,  9.26it/s]propagate in video:  28%|██▊       | 57/200 [00:06<00:15,  9.25it/s]propagate in video:  29%|██▉       | 58/200 [00:06<00:15,  9.25it/s]propagate in video:  30%|██▉       | 59/200 [00:06<00:15,  9.25it/s]propagate in video:  30%|███       | 60/200 [00:06<00:15,  9.24it/s]propagate in video:  30%|███       | 61/200 [00:06<00:15,  9.25it/s]propagate in video:  31%|███       | 62/200 [00:06<00:14,  9.26it/s]propagate in video:  32%|███▏      | 63/200 [00:06<00:14,  9.26it/s]propagate in video:  32%|███▏      | 64/200 [00:06<00:14,  9.25it/s]propagate in video:  32%|███▎      | 65/200 [00:06<00:14,  9.25it/s]propagate in video:  33%|███▎      | 66/200 [00:07<00:14,  9.25it/s]propagate in video:  34%|███▎      | 67/200 [00:07<00:14,  9.26it/s]propagate in video:  34%|███▍      | 68/200 [00:07<00:14,  9.25it/s]propagate in video:  34%|███▍      | 69/200 [00:07<00:14,  9.24it/s]propagate in video:  35%|███▌      | 70/200 [00:07<00:14,  9.25it/s]propagate in video:  36%|███▌      | 71/200 [00:07<00:13,  9.26it/s]propagate in video:  36%|███▌      | 72/200 [00:07<00:13,  9.26it/s]propagate in video:  36%|███▋      | 73/200 [00:07<00:13,  9.25it/s]propagate in video:  37%|███▋      | 74/200 [00:07<00:13,  9.26it/s]propagate in video:  38%|███▊      | 75/200 [00:07<00:13,  9.26it/s]propagate in video:  38%|███▊      | 76/200 [00:08<00:13,  9.26it/s]propagate in video:  38%|███▊      | 77/200 [00:08<00:13,  9.25it/s]propagate in video:  39%|███▉      | 78/200 [00:08<00:13,  9.24it/s]propagate in video:  40%|███▉      | 79/200 [00:08<00:13,  9.24it/s]propagate in video:  40%|████      | 80/200 [00:08<00:12,  9.24it/s]propagate in video:  40%|████      | 81/200 [00:08<00:12,  9.25it/s]propagate in video:  41%|████      | 82/200 [00:08<00:12,  9.25it/s]propagate in video:  42%|████▏     | 83/200 [00:08<00:12,  9.24it/s]propagate in video:  42%|████▏     | 84/200 [00:08<00:12,  9.24it/s]propagate in video:  42%|████▎     | 85/200 [00:09<00:12,  9.24it/s]propagate in video:  43%|████▎     | 86/200 [00:09<00:12,  9.23it/s]propagate in video:  44%|████▎     | 87/200 [00:09<00:12,  9.23it/s]propagate in video:  44%|████▍     | 88/200 [00:09<00:12,  9.23it/s]propagate in video:  44%|████▍     | 89/200 [00:09<00:12,  9.23it/s]propagate in video:  45%|████▌     | 90/200 [00:09<00:11,  9.23it/s]propagate in video:  46%|████▌     | 91/200 [00:09<00:11,  9.23it/s]propagate in video:  46%|████▌     | 92/200 [00:09<00:11,  9.22it/s]propagate in video:  46%|████▋     | 93/200 [00:09<00:11,  9.22it/s]propagate in video:  47%|████▋     | 94/200 [00:10<00:11,  9.22it/s]propagate in video:  48%|████▊     | 95/200 [00:10<00:11,  9.22it/s]propagate in video:  48%|████▊     | 96/200 [00:10<00:11,  9.22it/s]propagate in video:  48%|████▊     | 97/200 [00:10<00:11,  9.22it/s]propagate in video:  49%|████▉     | 98/200 [00:10<00:11,  9.22it/s]propagate in video:  50%|████▉     | 99/200 [00:10<00:10,  9.22it/s]propagate in video:  50%|█████     | 100/200 [00:10<00:10,  9.22it/s]propagate in video:  50%|█████     | 101/200 [00:10<00:10,  9.21it/s]propagate in video:  51%|█████     | 102/200 [00:10<00:10,  9.20it/s]propagate in video:  52%|█████▏    | 103/200 [00:11<00:10,  9.21it/s]propagate in video:  52%|█████▏    | 104/200 [00:11<00:10,  9.21it/s]propagate in video:  52%|█████▎    | 105/200 [00:11<00:10,  9.22it/s]propagate in video:  53%|█████▎    | 106/200 [00:11<00:10,  9.22it/s]propagate in video:  54%|█████▎    | 107/200 [00:11<00:10,  9.22it/s]propagate in video:  54%|█████▍    | 108/200 [00:11<00:09,  9.22it/s]propagate in video:  55%|█████▍    | 109/200 [00:11<00:09,  9.21it/s]propagate in video:  55%|█████▌    | 110/200 [00:11<00:09,  9.21it/s]propagate in video:  56%|█████▌    | 111/200 [00:11<00:09,  9.20it/s]propagate in video:  56%|█████▌    | 112/200 [00:11<00:09,  9.20it/s]propagate in video:  56%|█████▋    | 113/200 [00:12<00:09,  9.20it/s]propagate in video:  57%|█████▋    | 114/200 [00:12<00:09,  9.20it/s]propagate in video:  57%|█████▊    | 115/200 [00:12<00:09,  9.21it/s]propagate in video:  58%|█████▊    | 116/200 [00:12<00:09,  9.21it/s]propagate in video:  58%|█████▊    | 117/200 [00:12<00:09,  9.21it/s]propagate in video:  59%|█████▉    | 118/200 [00:12<00:08,  9.20it/s]propagate in video:  60%|█████▉    | 119/200 [00:12<00:08,  9.21it/s]propagate in video:  60%|██████    | 120/200 [00:12<00:08,  9.20it/s]propagate in video:  60%|██████    | 121/200 [00:12<00:08,  9.20it/s]propagate in video:  61%|██████    | 122/200 [00:13<00:08,  9.19it/s]propagate in video:  62%|██████▏   | 123/200 [00:13<00:08,  9.20it/s]propagate in video:  62%|██████▏   | 124/200 [00:13<00:08,  9.20it/s]propagate in video:  62%|██████▎   | 125/200 [00:13<00:08,  9.20it/s]propagate in video:  63%|██████▎   | 126/200 [00:13<00:08,  9.20it/s]propagate in video:  64%|██████▎   | 127/200 [00:13<00:07,  9.19it/s]propagate in video:  64%|██████▍   | 128/200 [00:13<00:07,  9.19it/s]propagate in video:  64%|██████▍   | 129/200 [00:13<00:07,  9.19it/s]propagate in video:  65%|██████▌   | 130/200 [00:13<00:07,  9.19it/s]propagate in video:  66%|██████▌   | 131/200 [00:14<00:07,  9.19it/s]propagate in video:  66%|██████▌   | 132/200 [00:14<00:07,  9.19it/s]propagate in video:  66%|██████▋   | 133/200 [00:14<00:07,  9.19it/s]propagate in video:  67%|██████▋   | 134/200 [00:14<00:07,  9.19it/s]propagate in video:  68%|██████▊   | 135/200 [00:14<00:07,  9.19it/s]propagate in video:  68%|██████▊   | 136/200 [00:14<00:06,  9.18it/s]propagate in video:  68%|██████▊   | 137/200 [00:14<00:06,  9.20it/s]propagate in video:  69%|██████▉   | 138/200 [00:14<00:06,  9.18it/s]propagate in video:  70%|██████▉   | 139/200 [00:14<00:06,  9.18it/s]propagate in video:  70%|███████   | 140/200 [00:15<00:06,  9.18it/s]propagate in video:  70%|███████   | 141/200 [00:15<00:06,  9.18it/s]propagate in video:  71%|███████   | 142/200 [00:15<00:06,  9.17it/s]propagate in video:  72%|███████▏  | 143/200 [00:15<00:06,  9.17it/s]propagate in video:  72%|███████▏  | 144/200 [00:15<00:06,  9.19it/s]propagate in video:  72%|███████▎  | 145/200 [00:15<00:05,  9.19it/s]propagate in video:  73%|███████▎  | 146/200 [00:15<00:05,  9.19it/s]propagate in video:  74%|███████▎  | 147/200 [00:15<00:05,  9.18it/s]propagate in video:  74%|███████▍  | 148/200 [00:15<00:05,  9.17it/s]propagate in video:  74%|███████▍  | 149/200 [00:16<00:05,  9.17it/s]propagate in video:  75%|███████▌  | 150/200 [00:16<00:05,  9.18it/s]propagate in video:  76%|███████▌  | 151/200 [00:16<00:05,  9.17it/s]propagate in video:  76%|███████▌  | 152/200 [00:16<00:05,  9.17it/s]propagate in video:  76%|███████▋  | 153/200 [00:16<00:05,  9.18it/s]propagate in video:  77%|███████▋  | 154/200 [00:16<00:05,  9.18it/s]propagate in video:  78%|███████▊  | 155/200 [00:16<00:04,  9.19it/s]propagate in video:  78%|███████▊  | 156/200 [00:16<00:04,  9.18it/s]propagate in video:  78%|███████▊  | 157/200 [00:16<00:04,  9.18it/s]propagate in video:  79%|███████▉  | 158/200 [00:17<00:04,  9.18it/s]propagate in video:  80%|███████▉  | 159/200 [00:17<00:04,  9.17it/s]propagate in video:  80%|████████  | 160/200 [00:17<00:04,  9.17it/s]propagate in video:  80%|████████  | 161/200 [00:17<00:04,  9.16it/s]propagate in video:  81%|████████  | 162/200 [00:17<00:04,  9.17it/s]propagate in video:  82%|████████▏ | 163/200 [00:17<00:04,  9.18it/s]propagate in video:  82%|████████▏ | 164/200 [00:17<00:03,  9.19it/s]propagate in video:  82%|████████▎ | 165/200 [00:17<00:03,  9.19it/s]propagate in video:  83%|████████▎ | 166/200 [00:17<00:03,  9.19it/s]propagate in video:  84%|████████▎ | 167/200 [00:17<00:03,  9.18it/s]propagate in video:  84%|████████▍ | 168/200 [00:18<00:03,  9.19it/s]propagate in video:  84%|████████▍ | 169/200 [00:18<00:03,  9.18it/s]propagate in video:  85%|████████▌ | 170/200 [00:18<00:03,  9.17it/s]propagate in video:  86%|████████▌ | 171/200 [00:18<00:03,  9.16it/s]propagate in video:  86%|████████▌ | 172/200 [00:18<00:03,  9.16it/s]propagate in video:  86%|████████▋ | 173/200 [00:18<00:02,  9.17it/s]propagate in video:  87%|████████▋ | 174/200 [00:18<00:02,  9.17it/s]propagate in video:  88%|████████▊ | 175/200 [00:18<00:02,  9.17it/s]propagate in video:  88%|████████▊ | 176/200 [00:18<00:02,  9.18it/s]propagate in video:  88%|████████▊ | 177/200 [00:19<00:02,  9.18it/s]propagate in video:  89%|████████▉ | 178/200 [00:19<00:02,  9.17it/s]propagate in video:  90%|████████▉ | 179/200 [00:19<00:02,  9.17it/s]propagate in video:  90%|█████████ | 180/200 [00:19<00:02,  9.16it/s]propagate in video:  90%|█████████ | 181/200 [00:19<00:02,  9.16it/s]propagate in video:  91%|█████████ | 182/200 [00:19<00:01,  9.16it/s]propagate in video:  92%|█████████▏| 183/200 [00:19<00:01,  9.16it/s]propagate in video:  92%|█████████▏| 184/200 [00:19<00:01,  9.17it/s]propagate in video:  92%|█████████▎| 185/200 [00:19<00:01,  9.17it/s]propagate in video:  93%|█████████▎| 186/200 [00:20<00:01,  9.18it/s]propagate in video:  94%|█████████▎| 187/200 [00:20<00:01,  9.17it/s]propagate in video:  94%|█████████▍| 188/200 [00:20<00:01,  9.17it/s]propagate in video:  94%|█████████▍| 189/200 [00:20<00:01,  9.16it/s]propagate in video:  95%|█████████▌| 190/200 [00:20<00:01,  9.15it/s]propagate in video:  96%|█████████▌| 191/200 [00:20<00:00,  9.15it/s]propagate in video:  96%|█████████▌| 192/200 [00:20<00:00,  9.14it/s]propagate in video:  96%|█████████▋| 193/200 [00:20<00:00,  9.15it/s]propagate in video:  97%|█████████▋| 194/200 [00:20<00:00,  9.15it/s]propagate in video:  98%|█████████▊| 195/200 [00:21<00:00,  9.15it/s]propagate in video:  98%|█████████▊| 196/200 [00:21<00:00,  9.15it/s]propagate in video:  98%|█████████▊| 197/200 [00:21<00:00,  9.15it/s]propagate in video:  99%|█████████▉| 198/200 [00:21<00:00,  9.14it/s]propagate in video: 100%|█████████▉| 199/200 [00:21<00:00,  9.14it/s]propagate in video: 100%|██████████| 200/200 [00:21<00:00,  9.13it/s]propagate in video: 100%|██████████| 200/200 [00:21<00:00,  9.26it/s]
+prop-Total allocated memory size (obj_output_dict): 1722 bytes
+prop-Total allocated memory size (obj_output_dict): 2638 bytes
+prop-Total allocated memory size (obj_output_dict): 3386 bytes
+prop-Total allocated memory size (obj_output_dict): 4134 bytes
+prop-Total allocated memory size (obj_output_dict): 4882 bytes
+prop-Total allocated memory size (obj_output_dict): 5630 bytes
+prop-Total allocated memory size (obj_output_dict): 6506 bytes
+prop-Total allocated memory size (obj_output_dict): 7254 bytes
+prop-Total allocated memory size (obj_output_dict): 8002 bytes
+prop-Total allocated memory size (obj_output_dict): 8750 bytes
+prop-Total allocated memory size (obj_output_dict): 9498 bytes
+prop-Total allocated memory size (obj_output_dict): 10526 bytes
+prop-Total allocated memory size (obj_output_dict): 11274 bytes
+prop-Total allocated memory size (obj_output_dict): 12022 bytes
+prop-Total allocated memory size (obj_output_dict): 12770 bytes
+prop-Total allocated memory size (obj_output_dict): 13518 bytes
+prop-Total allocated memory size (obj_output_dict): 14266 bytes
+prop-Total allocated memory size (obj_output_dict): 15014 bytes
+prop-Total allocated memory size (obj_output_dict): 15762 bytes
+prop-Total allocated memory size (obj_output_dict): 16510 bytes
+prop-Total allocated memory size (obj_output_dict): 17258 bytes
+prop-Total allocated memory size (obj_output_dict): 18006 bytes
+prop-Total allocated memory size (obj_output_dict): 19290 bytes
+prop-Total allocated memory size (obj_output_dict): 20038 bytes
+prop-Total allocated memory size (obj_output_dict): 20786 bytes
+prop-Total allocated memory size (obj_output_dict): 21534 bytes
+prop-Total allocated memory size (obj_output_dict): 22282 bytes
+prop-Total allocated memory size (obj_output_dict): 23030 bytes
+prop-Total allocated memory size (obj_output_dict): 23778 bytes
+prop-Total allocated memory size (obj_output_dict): 24526 bytes
+prop-Total allocated memory size (obj_output_dict): 25274 bytes
+prop-Total allocated memory size (obj_output_dict): 26022 bytes
+prop-Total allocated memory size (obj_output_dict): 26770 bytes
+prop-Total allocated memory size (obj_output_dict): 27518 bytes
+prop-Total allocated memory size (obj_output_dict): 28266 bytes
+prop-Total allocated memory size (obj_output_dict): 29014 bytes
+prop-Total allocated memory size (obj_output_dict): 29762 bytes
+prop-Total allocated memory size (obj_output_dict): 30510 bytes
+prop-Total allocated memory size (obj_output_dict): 31258 bytes
+prop-Total allocated memory size (obj_output_dict): 32006 bytes
+prop-Total allocated memory size (obj_output_dict): 32754 bytes
+prop-Total allocated memory size (obj_output_dict): 33502 bytes
+prop-Total allocated memory size (obj_output_dict): 34250 bytes
+prop-Total allocated memory size (obj_output_dict): 36094 bytes
+prop-Total allocated memory size (obj_output_dict): 36842 bytes
+prop-Total allocated memory size (obj_output_dict): 37590 bytes
+prop-Total allocated memory size (obj_output_dict): 38338 bytes
+prop-Total allocated memory size (obj_output_dict): 39086 bytes
+prop-Total allocated memory size (obj_output_dict): 39834 bytes
+prop-Total allocated memory size (obj_output_dict): 40582 bytes
+prop-Total allocated memory size (obj_output_dict): 41330 bytes
+prop-Total allocated memory size (obj_output_dict): 42078 bytes
+prop-Total allocated memory size (obj_output_dict): 42826 bytes
+prop-Total allocated memory size (obj_output_dict): 43574 bytes
+prop-Total allocated memory size (obj_output_dict): 44322 bytes
+prop-Total allocated memory size (obj_output_dict): 45070 bytes
+prop-Total allocated memory size (obj_output_dict): 45818 bytes
+prop-Total allocated memory size (obj_output_dict): 46566 bytes
+prop-Total allocated memory size (obj_output_dict): 47314 bytes
+prop-Total allocated memory size (obj_output_dict): 48062 bytes
+prop-Total allocated memory size (obj_output_dict): 48810 bytes
+prop-Total allocated memory size (obj_output_dict): 49558 bytes
+prop-Total allocated memory size (obj_output_dict): 50306 bytes
+prop-Total allocated memory size (obj_output_dict): 51054 bytes
+prop-Total allocated memory size (obj_output_dict): 51802 bytes
+prop-Total allocated memory size (obj_output_dict): 52550 bytes
+prop-Total allocated memory size (obj_output_dict): 53298 bytes
+prop-Total allocated memory size (obj_output_dict): 54046 bytes
+prop-Total allocated memory size (obj_output_dict): 54794 bytes
+prop-Total allocated memory size (obj_output_dict): 55542 bytes
+prop-Total allocated memory size (obj_output_dict): 56290 bytes
+prop-Total allocated memory size (obj_output_dict): 57038 bytes
+prop-Total allocated memory size (obj_output_dict): 57786 bytes
+prop-Total allocated memory size (obj_output_dict): 58534 bytes
+prop-Total allocated memory size (obj_output_dict): 59282 bytes
+prop-Total allocated memory size (obj_output_dict): 60030 bytes
+prop-Total allocated memory size (obj_output_dict): 60778 bytes
+prop-Total allocated memory size (obj_output_dict): 61526 bytes
+prop-Total allocated memory size (obj_output_dict): 62274 bytes
+prop-Total allocated memory size (obj_output_dict): 63022 bytes
+prop-Total allocated memory size (obj_output_dict): 63770 bytes
+prop-Total allocated memory size (obj_output_dict): 64518 bytes
+prop-Total allocated memory size (obj_output_dict): 65266 bytes
+prop-Total allocated memory size (obj_output_dict): 66014 bytes
+prop-Total allocated memory size (obj_output_dict): 66762 bytes
+prop-Total allocated memory size (obj_output_dict): 67510 bytes
+prop-Total allocated memory size (obj_output_dict): 70682 bytes
+prop-Total allocated memory size (obj_output_dict): 71430 bytes
+prop-Total allocated memory size (obj_output_dict): 72178 bytes
+prop-Total allocated memory size (obj_output_dict): 72926 bytes
+prop-Total allocated memory size (obj_output_dict): 73674 bytes
+prop-Total allocated memory size (obj_output_dict): 74422 bytes
+prop-Total allocated memory size (obj_output_dict): 75170 bytes
+prop-Total allocated memory size (obj_output_dict): 75918 bytes
+prop-Total allocated memory size (obj_output_dict): 76666 bytes
+prop-Total allocated memory size (obj_output_dict): 77414 bytes
+prop-Total allocated memory size (obj_output_dict): 78162 bytes
+prop-Total allocated memory size (obj_output_dict): 78910 bytes
+prop-Total allocated memory size (obj_output_dict): 79658 bytes
+prop-Total allocated memory size (obj_output_dict): 80406 bytes
+prop-Total allocated memory size (obj_output_dict): 81154 bytes
+prop-Total allocated memory size (obj_output_dict): 81902 bytes
+prop-Total allocated memory size (obj_output_dict): 82650 bytes
+prop-Total allocated memory size (obj_output_dict): 83398 bytes
+prop-Total allocated memory size (obj_output_dict): 84146 bytes
+prop-Total allocated memory size (obj_output_dict): 84894 bytes
+prop-Total allocated memory size (obj_output_dict): 85642 bytes
+prop-Total allocated memory size (obj_output_dict): 86390 bytes
+prop-Total allocated memory size (obj_output_dict): 87138 bytes
+prop-Total allocated memory size (obj_output_dict): 87886 bytes
+prop-Total allocated memory size (obj_output_dict): 88634 bytes
+prop-Total allocated memory size (obj_output_dict): 89382 bytes
+prop-Total allocated memory size (obj_output_dict): 90130 bytes
+prop-Total allocated memory size (obj_output_dict): 90878 bytes
+prop-Total allocated memory size (obj_output_dict): 91626 bytes
+prop-Total allocated memory size (obj_output_dict): 92374 bytes
+prop-Total allocated memory size (obj_output_dict): 93122 bytes
+prop-Total allocated memory size (obj_output_dict): 93870 bytes
+prop-Total allocated memory size (obj_output_dict): 94618 bytes
+prop-Total allocated memory size (obj_output_dict): 95366 bytes
+prop-Total allocated memory size (obj_output_dict): 96114 bytes
+prop-Total allocated memory size (obj_output_dict): 96862 bytes
+prop-Total allocated memory size (obj_output_dict): 97610 bytes
+prop-Total allocated memory size (obj_output_dict): 98358 bytes
+prop-Total allocated memory size (obj_output_dict): 99106 bytes
+prop-Total allocated memory size (obj_output_dict): 99854 bytes
+prop-Total allocated memory size (obj_output_dict): 100602 bytes
+prop-Total allocated memory size (obj_output_dict): 101350 bytes
+prop-Total allocated memory size (obj_output_dict): 102098 bytes
+prop-Total allocated memory size (obj_output_dict): 102846 bytes
+prop-Total allocated memory size (obj_output_dict): 103594 bytes
+prop-Total allocated memory size (obj_output_dict): 104342 bytes
+prop-Total allocated memory size (obj_output_dict): 105090 bytes
+prop-Total allocated memory size (obj_output_dict): 105838 bytes
+prop-Total allocated memory size (obj_output_dict): 106586 bytes
+prop-Total allocated memory size (obj_output_dict): 107334 bytes
+prop-Total allocated memory size (obj_output_dict): 108082 bytes
+prop-Total allocated memory size (obj_output_dict): 108830 bytes
+prop-Total allocated memory size (obj_output_dict): 109578 bytes
+prop-Total allocated memory size (obj_output_dict): 110326 bytes
+prop-Total allocated memory size (obj_output_dict): 111074 bytes
+prop-Total allocated memory size (obj_output_dict): 111822 bytes
+prop-Total allocated memory size (obj_output_dict): 112570 bytes
+prop-Total allocated memory size (obj_output_dict): 113318 bytes
+prop-Total allocated memory size (obj_output_dict): 114066 bytes
+prop-Total allocated memory size (obj_output_dict): 114814 bytes
+prop-Total allocated memory size (obj_output_dict): 115562 bytes
+prop-Total allocated memory size (obj_output_dict): 116310 bytes
+prop-Total allocated memory size (obj_output_dict): 117058 bytes
+prop-Total allocated memory size (obj_output_dict): 117806 bytes
+prop-Total allocated memory size (obj_output_dict): 118554 bytes
+prop-Total allocated memory size (obj_output_dict): 119302 bytes
+prop-Total allocated memory size (obj_output_dict): 120050 bytes
+prop-Total allocated memory size (obj_output_dict): 120798 bytes
+prop-Total allocated memory size (obj_output_dict): 121546 bytes
+prop-Total allocated memory size (obj_output_dict): 122294 bytes
+prop-Total allocated memory size (obj_output_dict): 123042 bytes
+prop-Total allocated memory size (obj_output_dict): 123790 bytes
+prop-Total allocated memory size (obj_output_dict): 124538 bytes
+prop-Total allocated memory size (obj_output_dict): 125286 bytes
+prop-Total allocated memory size (obj_output_dict): 126034 bytes
+prop-Total allocated memory size (obj_output_dict): 126782 bytes
+prop-Total allocated memory size (obj_output_dict): 127530 bytes
+prop-Total allocated memory size (obj_output_dict): 128278 bytes
+prop-Total allocated memory size (obj_output_dict): 129026 bytes
+prop-Total allocated memory size (obj_output_dict): 129774 bytes
+prop-Total allocated memory size (obj_output_dict): 130522 bytes
+prop-Total allocated memory size (obj_output_dict): 131270 bytes
+prop-Total allocated memory size (obj_output_dict): 132018 bytes
+prop-Total allocated memory size (obj_output_dict): 132766 bytes
+prop-Total allocated memory size (obj_output_dict): 133514 bytes
+prop-Total allocated memory size (obj_output_dict): 138878 bytes
+prop-Total allocated memory size (obj_output_dict): 139626 bytes
+prop-Total allocated memory size (obj_output_dict): 140374 bytes
+prop-Total allocated memory size (obj_output_dict): 141122 bytes
+prop-Total allocated memory size (obj_output_dict): 141870 bytes
+prop-Total allocated memory size (obj_output_dict): 142618 bytes
+prop-Total allocated memory size (obj_output_dict): 143366 bytes
+prop-Total allocated memory size (obj_output_dict): 144114 bytes
+prop-Total allocated memory size (obj_output_dict): 144862 bytes
+prop-Total allocated memory size (obj_output_dict): 145610 bytes
+prop-Total allocated memory size (obj_output_dict): 146358 bytes
+prop-Total allocated memory size (obj_output_dict): 147106 bytes
+prop-Total allocated memory size (obj_output_dict): 147854 bytes
+prop-Total allocated memory size (obj_output_dict): 148602 bytes
+prop-Total allocated memory size (obj_output_dict): 149350 bytes
+prop-Total allocated memory size (obj_output_dict): 150098 bytes
+prop-Total allocated memory size (obj_output_dict): 150846 bytes
+prop-Total allocated memory size (obj_output_dict): 151594 bytes
+prop-Total allocated memory size (obj_output_dict): 152342 bytes
+prop-Total allocated memory size (obj_output_dict): 153090 bytes
+prop-Total allocated memory size (obj_output_dict): 153838 bytes
+prop-Total allocated memory size (obj_output_dict): 154586 bytes
+prop-Total allocated memory size (obj_output_dict): 155334 bytes
+prop-Total allocated memory size (obj_output_dict): 156082 bytes
+prop-Total allocated memory size (obj_output_dict): 156830 bytes
+prop-Total allocated memory size (obj_output_dict): 157578 bytes
+prop-Total allocated memory size (obj_output_dict): 158326 bytes
+prop-Total allocated memory size (obj_output_dict): 159074 bytes
+prop-Total allocated memory size (obj_output_dict): 159822 bytes
+
+[After Video Propagation] GPU Memory Usage
+Allocated: 4248.21 MB
+Max Allocated: 4530.55 MB
+Reserved: 4852.81 MB
+Max Reserved: 4852.81 MB
+
+-------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                     Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg       CPU Mem  Self CPU Mem    # of Calls  
+-------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+    cudaDeviceSynchronize       100.00%      22.235us       100.00%      22.235us      22.235us           0 b           0 b             1  
+-------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 22.235us
+

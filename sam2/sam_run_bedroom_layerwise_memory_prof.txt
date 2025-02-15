@@ -1,0 +1,278 @@
+Hook registered on: image_encoder.trunk.blocks.0.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.0.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.0.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.0.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.1.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.1.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.1.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.1.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.2.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.2.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.2.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.2.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.2.proj (End)
+Hook registered on: image_encoder.trunk.blocks.3.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.3.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.3.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.3.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.4.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.4.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.4.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.4.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.5.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.5.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.5.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.5.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.6.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.6.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.6.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.6.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.7.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.7.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.7.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.7.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.8.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.8.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.8.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.8.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.8.proj (End)
+Hook registered on: image_encoder.trunk.blocks.9.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.9.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.9.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.9.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.10.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.10.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.10.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.10.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.11.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.11.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.11.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.11.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.12.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.12.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.12.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.12.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.13.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.13.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.13.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.13.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.14.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.14.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.14.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.14.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.15.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.15.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.15.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.15.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.16.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.16.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.16.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.16.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.17.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.17.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.17.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.17.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.18.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.18.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.18.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.18.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.19.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.19.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.19.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.19.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.20.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.20.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.20.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.20.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.21.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.21.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.21.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.21.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.22.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.22.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.22.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.22.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.23.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.23.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.23.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.23.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.24.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.24.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.24.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.24.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.25.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.25.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.25.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.25.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.26.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.26.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.26.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.26.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.27.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.27.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.27.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.27.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.28.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.28.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.28.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.28.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.29.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.29.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.29.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.29.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.30.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.30.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.30.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.30.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.31.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.31.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.31.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.31.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.32.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.32.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.32.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.32.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.33.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.33.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.33.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.33.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.34.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.34.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.34.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.34.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.35.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.35.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.35.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.35.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.36.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.36.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.36.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.36.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.37.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.37.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.37.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.37.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.38.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.38.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.38.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.38.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.39.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.39.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.39.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.39.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.40.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.40.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.40.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.40.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.41.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.41.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.41.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.41.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.42.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.42.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.42.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.42.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.43.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.43.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.43.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.43.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.44.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.44.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.44.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.44.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.44.proj (End)
+Hook registered on: image_encoder.trunk.blocks.45.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.45.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.45.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.45.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.46.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.46.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.46.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.46.mlp.layers.1 (End)
+Hook registered on: image_encoder.trunk.blocks.47.norm1 (Start)
+Hook registered on: image_encoder.trunk.blocks.47.attn.proj (End)
+Hook registered on: image_encoder.trunk.blocks.47.norm2 (Start)
+Hook registered on: image_encoder.trunk.blocks.47.mlp.layers.1 (End)
+Hook registered on: image_encoder.neck.convs.0.conv (Start)
+Hook registered on: image_encoder.neck.convs.3.conv (End)
+Hook registered on: memory_attention.layers.0.self_attn.out_proj (End)
+Hook registered on: memory_attention.layers.0.cross_attn_image.out_proj (End)
+Hook registered on: memory_attention.layers.0.linear2 (End)
+Hook registered on: memory_attention.layers.0.norm1 (Start)
+Hook registered on: memory_attention.layers.0.norm2 (Start)
+Hook registered on: memory_attention.layers.0.norm3 (Start)
+Hook registered on: memory_attention.layers.1.self_attn.out_proj (End)
+Hook registered on: memory_attention.layers.1.cross_attn_image.out_proj (End)
+Hook registered on: memory_attention.layers.1.linear2 (End)
+Hook registered on: memory_attention.layers.1.norm1 (Start)
+Hook registered on: memory_attention.layers.1.norm2 (Start)
+Hook registered on: memory_attention.layers.1.norm3 (Start)
+Hook registered on: memory_attention.layers.2.self_attn.out_proj (End)
+Hook registered on: memory_attention.layers.2.cross_attn_image.out_proj (End)
+Hook registered on: memory_attention.layers.2.linear2 (End)
+Hook registered on: memory_attention.layers.2.norm1 (Start)
+Hook registered on: memory_attention.layers.2.norm2 (Start)
+Hook registered on: memory_attention.layers.2.norm3 (Start)
+Hook registered on: memory_attention.layers.3.self_attn.out_proj (End)
+Hook registered on: memory_attention.layers.3.cross_attn_image.out_proj (End)
+Hook registered on: memory_attention.layers.3.linear2 (End)
+Hook registered on: memory_attention.layers.3.norm1 (Start)
+Hook registered on: memory_attention.layers.3.norm2 (Start)
+Hook registered on: memory_attention.layers.3.norm3 (Start)
+Hook registered on: memory_encoder.mask_downsampler.encoder.0 (Start)
+Hook registered on: memory_encoder.mask_downsampler.encoder.12 (End)
+Hook registered on: memory_encoder.fuser.layers.0.dwconv (Start)
+Hook registered on: memory_encoder.fuser.layers.1.pwconv2 (End)
+Hook registered on: sam_mask_decoder.transformer.layers.0.self_attn.q_proj (Start)
+Hook registered on: sam_mask_decoder.transformer.layers.0.self_attn.out_proj (End)
+Hook registered on: sam_mask_decoder.transformer.layers.0.norm1 (Start)
+Hook registered on: sam_mask_decoder.transformer.layers.0.cross_attn_token_to_image.out_proj (End)
+Hook registered on: sam_mask_decoder.transformer.layers.0.norm2 (Start)
+Hook registered on: sam_mask_decoder.transformer.layers.0.mlp.layers.1 (End)
+Hook registered on: sam_mask_decoder.transformer.layers.0.norm3 (Start)
+Hook registered on: sam_mask_decoder.transformer.layers.0.cross_attn_image_to_token.out_proj (End)
+Hook registered on: sam_mask_decoder.transformer.layers.1.self_attn.q_proj (Start)
+Hook registered on: sam_mask_decoder.transformer.layers.1.self_attn.out_proj (End)
+Hook registered on: sam_mask_decoder.transformer.layers.1.norm1 (Start)
+Hook registered on: sam_mask_decoder.transformer.layers.1.cross_attn_token_to_image.out_proj (End)
+Hook registered on: sam_mask_decoder.transformer.layers.1.norm2 (Start)
+Hook registered on: sam_mask_decoder.transformer.layers.1.mlp.layers.1 (End)
+Hook registered on: sam_mask_decoder.transformer.layers.1.norm3 (Start)
+Hook registered on: sam_mask_decoder.transformer.layers.1.cross_attn_image_to_token.out_proj (End)
+frame loading (JPEG):   0%|          | 0/200 [00:00<?, ?it/s]frame loading (JPEG):   0%|          | 1/200 [00:00<00:32,  6.19it/s]frame loading (JPEG):   2%|▏         | 3/200 [00:00<00:18, 10.61it/s]frame loading (JPEG):   2%|▎         | 5/200 [00:00<00:15, 12.49it/s]frame loading (JPEG):   4%|▎         | 7/200 [00:00<00:14, 13.35it/s]frame loading (JPEG):   4%|▍         | 9/200 [00:00<00:13, 13.79it/s]frame loading (JPEG):   6%|▌         | 11/200 [00:00<00:12, 14.96it/s]frame loading (JPEG):   6%|▋         | 13/200 [00:00<00:12, 15.00it/s]frame loading (JPEG):   8%|▊         | 15/200 [00:01<00:12, 14.92it/s]frame loading (JPEG):   9%|▉         | 18/200 [00:01<00:11, 16.48it/s]frame loading (JPEG):  10%|█         | 20/200 [00:01<00:11, 16.09it/s]frame loading (JPEG):  11%|█         | 22/200 [00:01<00:11, 15.72it/s]frame loading (JPEG):  12%|█▏        | 24/200 [00:01<00:10, 16.56it/s]frame loading (JPEG):  13%|█▎        | 26/200 [00:01<00:09, 17.42it/s]frame loading (JPEG):  14%|█▍        | 28/200 [00:01<00:10, 16.71it/s]frame loading (JPEG):  15%|█▌        | 30/200 [00:01<00:10, 16.55it/s]frame loading (JPEG):  16%|█▌        | 32/200 [00:02<00:09, 17.39it/s]frame loading (JPEG):  18%|█▊        | 35/200 [00:02<00:08, 19.19it/s]frame loading (JPEG):  18%|█▊        | 37/200 [00:02<00:08, 19.12it/s]frame loading (JPEG):  20%|██        | 40/200 [00:02<00:08, 19.40it/s]frame loading (JPEG):  21%|██        | 42/200 [00:02<00:08, 18.16it/s]frame loading (JPEG):  22%|██▏       | 44/200 [00:02<00:08, 17.70it/s]frame loading (JPEG):  23%|██▎       | 46/200 [00:02<00:09, 16.97it/s]frame loading (JPEG):  24%|██▍       | 48/200 [00:02<00:09, 16.17it/s]frame loading (JPEG):  25%|██▌       | 50/200 [00:03<00:09, 15.84it/s]frame loading (JPEG):  26%|██▌       | 52/200 [00:03<00:09, 15.76it/s]frame loading (JPEG):  27%|██▋       | 54/200 [00:03<00:09, 15.55it/s]frame loading (JPEG):  28%|██▊       | 56/200 [00:03<00:09, 15.42it/s]frame loading (JPEG):  29%|██▉       | 58/200 [00:03<00:09, 15.12it/s]frame loading (JPEG):  30%|███       | 61/200 [00:03<00:07, 17.50it/s]frame loading (JPEG):  32%|███▏      | 64/200 [00:03<00:06, 20.45it/s]frame loading (JPEG):  34%|███▎      | 67/200 [00:04<00:07, 18.03it/s]frame loading (JPEG):  34%|███▍      | 69/200 [00:04<00:07, 17.38it/s]frame loading (JPEG):  36%|███▌      | 72/200 [00:04<00:07, 17.81it/s]frame loading (JPEG):  38%|███▊      | 75/200 [00:04<00:06, 17.89it/s]frame loading (JPEG):  39%|███▉      | 78/200 [00:04<00:06, 18.78it/s]frame loading (JPEG):  40%|████      | 80/200 [00:04<00:06, 18.86it/s]frame loading (JPEG):  42%|████▏     | 83/200 [00:04<00:06, 19.36it/s]frame loading (JPEG):  42%|████▎     | 85/200 [00:05<00:06, 17.69it/s]frame loading (JPEG):  44%|████▍     | 88/200 [00:05<00:06, 17.93it/s]frame loading (JPEG):  46%|████▌     | 91/200 [00:05<00:05, 20.50it/s]frame loading (JPEG):  47%|████▋     | 94/200 [00:05<00:05, 18.27it/s]frame loading (JPEG):  48%|████▊     | 97/200 [00:05<00:05, 19.67it/s]frame loading (JPEG):  50%|█████     | 100/200 [00:05<00:05, 18.07it/s]frame loading (JPEG):  51%|█████     | 102/200 [00:05<00:05, 17.47it/s]frame loading (JPEG):  52%|█████▎    | 105/200 [00:06<00:05, 18.86it/s]frame loading (JPEG):  54%|█████▍    | 108/200 [00:06<00:04, 19.59it/s]frame loading (JPEG):  55%|█████▌    | 110/200 [00:06<00:04, 18.02it/s]frame loading (JPEG):  56%|█████▌    | 112/200 [00:06<00:05, 17.19it/s]frame loading (JPEG):  57%|█████▊    | 115/200 [00:06<00:04, 18.18it/s]frame loading (JPEG):  58%|█████▊    | 117/200 [00:06<00:04, 18.50it/s]frame loading (JPEG):  60%|██████    | 120/200 [00:06<00:04, 19.92it/s]frame loading (JPEG):  62%|██████▏   | 123/200 [00:07<00:03, 20.54it/s]frame loading (JPEG):  63%|██████▎   | 126/200 [00:07<00:03, 22.74it/s]frame loading (JPEG):  64%|██████▍   | 129/200 [00:07<00:03, 21.52it/s]frame loading (JPEG):  66%|██████▌   | 132/200 [00:07<00:03, 21.90it/s]frame loading (JPEG):  68%|██████▊   | 135/200 [00:07<00:02, 22.04it/s]frame loading (JPEG):  69%|██████▉   | 138/200 [00:07<00:03, 19.19it/s]frame loading (JPEG):  70%|███████   | 141/200 [00:07<00:02, 20.35it/s]frame loading (JPEG):  72%|███████▏  | 144/200 [00:08<00:02, 19.98it/s]frame loading (JPEG):  74%|███████▎  | 147/200 [00:08<00:02, 19.48it/s]frame loading (JPEG):  74%|███████▍  | 149/200 [00:08<00:02, 18.01it/s]frame loading (JPEG):  76%|███████▌  | 151/200 [00:08<00:02, 17.07it/s]frame loading (JPEG):  76%|███████▋  | 153/200 [00:08<00:02, 16.48it/s]frame loading (JPEG):  78%|███████▊  | 155/200 [00:08<00:02, 16.03it/s]frame loading (JPEG):  79%|███████▉  | 158/200 [00:08<00:02, 17.96it/s]frame loading (JPEG):  80%|████████  | 161/200 [00:09<00:02, 19.26it/s]frame loading (JPEG):  82%|████████▏ | 163/200 [00:09<00:02, 18.47it/s]frame loading (JPEG):  82%|████████▎ | 165/200 [00:09<00:02, 17.46it/s]frame loading (JPEG):  84%|████████▎ | 167/200 [00:09<00:01, 17.88it/s]frame loading (JPEG):  84%|████████▍ | 169/200 [00:09<00:01, 17.55it/s]frame loading (JPEG):  86%|████████▌ | 171/200 [00:09<00:01, 16.80it/s]frame loading (JPEG):  87%|████████▋ | 174/200 [00:09<00:01, 18.51it/s]frame loading (JPEG):  88%|████████▊ | 177/200 [00:09<00:01, 21.20it/s]frame loading (JPEG):  90%|█████████ | 180/200 [00:10<00:01, 19.17it/s]frame loading (JPEG):  91%|█████████ | 182/200 [00:10<00:00, 19.03it/s]frame loading (JPEG):  92%|█████████▏| 184/200 [00:10<00:00, 18.94it/s]frame loading (JPEG):  94%|█████████▎| 187/200 [00:10<00:00, 18.84it/s]frame loading (JPEG):  94%|█████████▍| 189/200 [00:10<00:00, 18.80it/s]frame loading (JPEG):  96%|█████████▌| 191/200 [00:10<00:00, 17.70it/s]frame loading (JPEG):  96%|█████████▋| 193/200 [00:10<00:00, 18.11it/s]frame loading (JPEG):  98%|█████████▊| 196/200 [00:10<00:00, 21.21it/s]frame loading (JPEG): 100%|█████████▉| 199/200 [00:11<00:00, 18.63it/s]frame loading (JPEG): 100%|██████████| 200/200 [00:11<00:00, 17.96it/s]
+/u/rgq5aw/GIT/sam2/sam2/sam2_video_predictor.py:827: UserWarning: cannot import name '_C' from 'sam2' (/u/rgq5aw/GIT/sam2/sam2/__init__.py)
+
+Skipping the post-processing step due to the error above. You can still use SAM 2 and it's OK to ignore the error above, although some post-processing functionality may be limited (which doesn't affect the results in most cases; see https://github.com/facebookresearch/sam2/blob/main/INSTALL.md).
+  pred_masks_gpu = fill_holes_in_mask_scores(
+propagate in video:   0%|          | 0/200 [00:00<?, ?it/s]propagate in video:   1%|          | 2/200 [00:00<00:37,  5.31it/s]propagate in video:   2%|▏         | 3/200 [00:00<00:52,  3.73it/s]propagate in video:   2%|▏         | 4/200 [00:01<01:01,  3.19it/s]propagate in video:   2%|▎         | 5/200 [00:01<01:07,  2.91it/s]propagate in video:   3%|▎         | 6/200 [00:01<01:11,  2.72it/s]propagate in video:   4%|▎         | 7/200 [00:02<01:14,  2.59it/s]propagate in video:   4%|▍         | 8/200 [00:02<01:17,  2.48it/s]propagate in video:   4%|▍         | 9/200 [00:03<01:19,  2.41it/s]propagate in video:   5%|▌         | 10/200 [00:03<01:20,  2.36it/s]propagate in video:   6%|▌         | 11/200 [00:04<01:20,  2.33it/s]propagate in video:   6%|▌         | 12/200 [00:04<01:21,  2.31it/s]propagate in video:   6%|▋         | 13/200 [00:05<01:21,  2.30it/s]propagate in video:   7%|▋         | 14/200 [00:05<01:21,  2.29it/s]propagate in video:   8%|▊         | 15/200 [00:05<01:21,  2.28it/s]propagate in video:   8%|▊         | 16/200 [00:06<01:20,  2.28it/s]propagate in video:   8%|▊         | 17/200 [00:06<01:20,  2.27it/s]propagate in video:   9%|▉         | 18/200 [00:07<01:20,  2.27it/s]propagate in video:  10%|▉         | 19/200 [00:07<01:19,  2.26it/s]propagate in video:  10%|█         | 20/200 [00:08<01:19,  2.25it/s]propagate in video:  10%|█         | 21/200 [00:08<01:19,  2.25it/s]propagate in video:  11%|█         | 22/200 [00:09<01:18,  2.25it/s]propagate in video:  12%|█▏        | 23/200 [00:09<01:18,  2.25it/s]propagate in video:  12%|█▏        | 24/200 [00:09<01:18,  2.25it/s]propagate in video:  12%|█▎        | 25/200 [00:10<01:17,  2.25it/s]propagate in video:  13%|█▎        | 26/200 [00:10<01:17,  2.25it/s]propagate in video:  14%|█▎        | 27/200 [00:11<01:17,  2.25it/s]propagate in video:  14%|█▍        | 28/200 [00:11<01:16,  2.25it/s]propagate in video:  14%|█▍        | 29/200 [00:12<01:16,  2.25it/s]propagate in video:  15%|█▌        | 30/200 [00:12<01:15,  2.25it/s]propagate in video:  16%|█▌        | 31/200 [00:13<01:15,  2.25it/s]propagate in video:  16%|█▌        | 32/200 [00:13<01:14,  2.24it/s]propagate in video:  16%|█▋        | 33/200 [00:13<01:14,  2.24it/s]propagate in video:  17%|█▋        | 34/200 [00:14<01:13,  2.25it/s]propagate in video:  18%|█▊        | 35/200 [00:14<01:13,  2.24it/s]propagate in video:  18%|█▊        | 36/200 [00:15<01:13,  2.24it/s]propagate in video:  18%|█▊        | 37/200 [00:15<01:12,  2.24it/s]propagate in video:  19%|█▉        | 38/200 [00:16<01:12,  2.24it/s]propagate in video:  20%|█▉        | 39/200 [00:16<01:11,  2.24it/s]propagate in video:  20%|██        | 40/200 [00:17<01:11,  2.23it/s]propagate in video:  20%|██        | 41/200 [00:17<01:11,  2.24it/s]propagate in video:  21%|██        | 42/200 [00:17<01:10,  2.24it/s]propagate in video:  22%|██▏       | 43/200 [00:18<01:10,  2.23it/s]propagate in video:  22%|██▏       | 44/200 [00:18<01:09,  2.23it/s]propagate in video:  22%|██▎       | 45/200 [00:19<01:09,  2.23it/s]propagate in video:  23%|██▎       | 46/200 [00:19<01:09,  2.23it/s]propagate in video:  24%|██▎       | 47/200 [00:20<01:08,  2.23it/s]propagate in video:  24%|██▍       | 48/200 [00:20<01:08,  2.23it/s]propagate in video:  24%|██▍       | 49/200 [00:21<01:07,  2.22it/s]propagate in video:  25%|██▌       | 50/200 [00:21<01:07,  2.22it/s]propagate in video:  26%|██▌       | 51/200 [00:21<01:06,  2.22it/s]propagate in video:  26%|██▌       | 52/200 [00:22<01:06,  2.22it/s]propagate in video:  26%|██▋       | 53/200 [00:22<01:06,  2.22it/s]propagate in video:  27%|██▋       | 54/200 [00:23<01:05,  2.22it/s]propagate in video:  28%|██▊       | 55/200 [00:23<01:05,  2.22it/s]propagate in video:  28%|██▊       | 56/200 [00:24<01:05,  2.21it/s]propagate in video:  28%|██▊       | 57/200 [00:24<01:04,  2.21it/s]propagate in video:  29%|██▉       | 58/200 [00:25<01:04,  2.21it/s]propagate in video:  30%|██▉       | 59/200 [00:25<01:03,  2.21it/s]propagate in video:  30%|███       | 60/200 [00:26<01:03,  2.21it/s]propagate in video:  30%|███       | 61/200 [00:26<01:02,  2.21it/s]propagate in video:  31%|███       | 62/200 [00:26<01:02,  2.21it/s]propagate in video:  32%|███▏      | 63/200 [00:27<01:02,  2.20it/s]propagate in video:  32%|███▏      | 64/200 [00:27<01:01,  2.20it/s]propagate in video:  32%|███▎      | 65/200 [00:28<01:01,  2.20it/s]propagate in video:  33%|███▎      | 66/200 [00:28<01:00,  2.20it/s]propagate in video:  34%|███▎      | 67/200 [00:29<01:00,  2.20it/s]propagate in video:  34%|███▍      | 68/200 [00:29<01:00,  2.20it/s]propagate in video:  34%|███▍      | 69/200 [00:30<00:59,  2.20it/s]propagate in video:  35%|███▌      | 70/200 [00:30<00:59,  2.20it/s]propagate in video:  36%|███▌      | 71/200 [00:31<00:58,  2.20it/s]propagate in video:  36%|███▌      | 72/200 [00:31<00:58,  2.19it/s]propagate in video:  36%|███▋      | 73/200 [00:31<00:57,  2.19it/s]propagate in video:  37%|███▋      | 74/200 [00:32<00:57,  2.19it/s]propagate in video:  38%|███▊      | 75/200 [00:32<00:57,  2.19it/s]propagate in video:  38%|███▊      | 76/200 [00:33<00:56,  2.19it/s]propagate in video:  38%|███▊      | 77/200 [00:33<00:56,  2.18it/s]propagate in video:  39%|███▉      | 78/200 [00:34<00:55,  2.19it/s]propagate in video:  40%|███▉      | 79/200 [00:34<00:55,  2.18it/s]propagate in video:  40%|████      | 80/200 [00:35<00:54,  2.18it/s]propagate in video:  40%|████      | 81/200 [00:35<00:54,  2.18it/s]propagate in video:  41%|████      | 82/200 [00:36<00:53,  2.19it/s]propagate in video:  42%|████▏     | 83/200 [00:36<00:53,  2.18it/s]propagate in video:  42%|████▏     | 84/200 [00:37<00:53,  2.18it/s]propagate in video:  42%|████▎     | 85/200 [00:37<00:52,  2.18it/s]propagate in video:  43%|████▎     | 86/200 [00:37<00:52,  2.18it/s]propagate in video:  44%|████▎     | 87/200 [00:38<00:51,  2.18it/s]propagate in video:  44%|████▍     | 88/200 [00:38<00:51,  2.18it/s]propagate in video:  44%|████▍     | 89/200 [00:39<00:50,  2.18it/s]propagate in video:  45%|████▌     | 90/200 [00:39<00:50,  2.18it/s]propagate in video:  46%|████▌     | 91/200 [00:40<00:50,  2.18it/s]propagate in video:  46%|████▌     | 92/200 [00:40<00:49,  2.18it/s]propagate in video:  46%|████▋     | 93/200 [00:41<00:49,  2.18it/s]propagate in video:  47%|████▋     | 94/200 [00:41<00:48,  2.17it/s]propagate in video:  48%|████▊     | 95/200 [00:42<00:48,  2.17it/s]propagate in video:  48%|████▊     | 96/200 [00:42<00:47,  2.17it/s]propagate in video:  48%|████▊     | 97/200 [00:42<00:47,  2.17it/s]propagate in video:  49%|████▉     | 98/200 [00:43<00:46,  2.17it/s]propagate in video:  50%|████▉     | 99/200 [00:43<00:46,  2.17it/s]propagate in video:  50%|█████     | 100/200 [00:44<00:46,  2.17it/s]propagate in video:  50%|█████     | 101/200 [00:44<00:45,  2.17it/s]propagate in video:  51%|█████     | 102/200 [00:45<00:45,  2.17it/s]propagate in video:  52%|█████▏    | 103/200 [00:45<00:44,  2.17it/s]propagate in video:  52%|█████▏    | 104/200 [00:46<00:44,  2.17it/s]propagate in video:  52%|█████▎    | 105/200 [00:46<00:43,  2.17it/s]propagate in video:  53%|█████▎    | 106/200 [00:47<00:43,  2.17it/s]propagate in video:  54%|█████▎    | 107/200 [00:47<00:42,  2.17it/s]propagate in video:  54%|█████▍    | 108/200 [00:48<00:42,  2.16it/s]propagate in video:  55%|█████▍    | 109/200 [00:48<00:42,  2.16it/s]propagate in video:  55%|█████▌    | 110/200 [00:48<00:41,  2.16it/s]propagate in video:  56%|█████▌    | 111/200 [00:49<00:41,  2.16it/s]propagate in video:  56%|█████▌    | 112/200 [00:49<00:40,  2.16it/s]propagate in video:  56%|█████▋    | 113/200 [00:50<00:40,  2.16it/s]propagate in video:  57%|█████▋    | 114/200 [00:50<00:39,  2.16it/s]propagate in video:  57%|█████▊    | 115/200 [00:51<00:39,  2.16it/s]propagate in video:  58%|█████▊    | 116/200 [00:51<00:38,  2.16it/s]propagate in video:  58%|█████▊    | 117/200 [00:52<00:38,  2.16it/s]propagate in video:  59%|█████▉    | 118/200 [00:52<00:38,  2.16it/s]propagate in video:  60%|█████▉    | 119/200 [00:53<00:37,  2.16it/s]propagate in video:  60%|██████    | 120/200 [00:53<00:37,  2.15it/s]propagate in video:  60%|██████    | 121/200 [00:54<00:36,  2.16it/s]propagate in video:  61%|██████    | 122/200 [00:54<00:36,  2.16it/s]propagate in video:  62%|██████▏   | 123/200 [00:55<00:35,  2.15it/s]propagate in video:  62%|██████▏   | 124/200 [00:55<00:35,  2.16it/s]propagate in video:  62%|██████▎   | 125/200 [00:55<00:34,  2.16it/s]propagate in video:  63%|██████▎   | 126/200 [00:56<00:34,  2.15it/s]propagate in video:  64%|██████▎   | 127/200 [00:56<00:33,  2.15it/s]propagate in video:  64%|██████▍   | 128/200 [00:57<00:33,  2.15it/s]propagate in video:  64%|██████▍   | 129/200 [00:57<00:33,  2.15it/s]propagate in video:  65%|██████▌   | 130/200 [00:58<00:32,  2.15it/s]propagate in video:  66%|██████▌   | 131/200 [00:58<00:32,  2.15it/s]propagate in video:  66%|██████▌   | 132/200 [00:59<00:31,  2.15it/s]propagate in video:  66%|██████▋   | 133/200 [00:59<00:31,  2.15it/s]propagate in video:  67%|██████▋   | 134/200 [01:00<00:30,  2.15it/s]propagate in video:  68%|██████▊   | 135/200 [01:00<00:30,  2.15it/s]propagate in video:  68%|██████▊   | 136/200 [01:01<00:29,  2.15it/s]propagate in video:  68%|██████▊   | 137/200 [01:01<00:29,  2.15it/s]propagate in video:  69%|██████▉   | 138/200 [01:02<00:28,  2.15it/s]propagate in video:  70%|██████▉   | 139/200 [01:02<00:28,  2.15it/s]propagate in video:  70%|███████   | 140/200 [01:02<00:27,  2.15it/s]propagate in video:  70%|███████   | 141/200 [01:03<00:27,  2.15it/s]propagate in video:  71%|███████   | 142/200 [01:03<00:27,  2.15it/s]propagate in video:  72%|███████▏  | 143/200 [01:04<00:26,  2.15it/s]propagate in video:  72%|███████▏  | 144/200 [01:04<00:26,  2.15it/s]propagate in video:  72%|███████▎  | 145/200 [01:05<00:25,  2.15it/s]propagate in video:  73%|███████▎  | 146/200 [01:05<00:25,  2.14it/s]propagate in video:  74%|███████▎  | 147/200 [01:06<00:24,  2.15it/s]propagate in video:  74%|███████▍  | 148/200 [01:06<00:24,  2.14it/s]propagate in video:  74%|███████▍  | 149/200 [01:07<00:23,  2.14it/s]propagate in video:  75%|███████▌  | 150/200 [01:07<00:23,  2.14it/s]propagate in video:  76%|███████▌  | 151/200 [01:08<00:22,  2.14it/s]propagate in video:  76%|███████▌  | 152/200 [01:08<00:22,  2.14it/s]propagate in video:  76%|███████▋  | 153/200 [01:09<00:21,  2.14it/s]propagate in video:  77%|███████▋  | 154/200 [01:09<00:21,  2.14it/s]propagate in video:  78%|███████▊  | 155/200 [01:09<00:20,  2.14it/s]propagate in video:  78%|███████▊  | 156/200 [01:10<00:20,  2.14it/s]propagate in video:  78%|███████▊  | 157/200 [01:10<00:20,  2.14it/s]propagate in video:  79%|███████▉  | 158/200 [01:11<00:19,  2.14it/s]propagate in video:  80%|███████▉  | 159/200 [01:11<00:19,  2.14it/s]propagate in video:  80%|████████  | 160/200 [01:12<00:18,  2.14it/s]propagate in video:  80%|████████  | 161/200 [01:12<00:18,  2.14it/s]propagate in video:  81%|████████  | 162/200 [01:13<00:17,  2.14it/s]propagate in video:  82%|████████▏ | 163/200 [01:13<00:17,  2.14it/s]propagate in video:  82%|████████▏ | 164/200 [01:14<00:16,  2.14it/s]propagate in video:  82%|████████▎ | 165/200 [01:14<00:16,  2.13it/s]propagate in video:  83%|████████▎ | 166/200 [01:15<00:15,  2.14it/s]propagate in video:  84%|████████▎ | 167/200 [01:15<00:15,  2.14it/s]propagate in video:  84%|████████▍ | 168/200 [01:16<00:14,  2.13it/s]propagate in video:  84%|████████▍ | 169/200 [01:16<00:14,  2.14it/s]propagate in video:  85%|████████▌ | 170/200 [01:16<00:14,  2.14it/s]propagate in video:  86%|████████▌ | 171/200 [01:17<00:13,  2.14it/s]propagate in video:  86%|████████▌ | 172/200 [01:17<00:13,  2.14it/s]propagate in video:  86%|████████▋ | 173/200 [01:18<00:12,  2.14it/s]propagate in video:  87%|████████▋ | 174/200 [01:18<00:12,  2.13it/s]propagate in video:  88%|████████▊ | 175/200 [01:19<00:11,  2.14it/s]propagate in video:  88%|████████▊ | 176/200 [01:19<00:11,  2.14it/s]propagate in video:  88%|████████▊ | 177/200 [01:20<00:10,  2.13it/s]propagate in video:  89%|████████▉ | 178/200 [01:20<00:10,  2.13it/s]propagate in video:  90%|████████▉ | 179/200 [01:21<00:09,  2.13it/s]propagate in video:  90%|█████████ | 180/200 [01:21<00:09,  2.13it/s]propagate in video:  90%|█████████ | 181/200 [01:22<00:08,  2.13it/s]propagate in video:  91%|█████████ | 182/200 [01:22<00:08,  2.14it/s]propagate in video:  92%|█████████▏| 183/200 [01:23<00:07,  2.13it/s]propagate in video:  92%|█████████▏| 184/200 [01:23<00:07,  2.13it/s]propagate in video:  92%|█████████▎| 185/200 [01:23<00:07,  2.13it/s]propagate in video:  93%|█████████▎| 186/200 [01:24<00:06,  2.13it/s]propagate in video:  94%|█████████▎| 187/200 [01:24<00:06,  2.13it/s]propagate in video:  94%|█████████▍| 188/200 [01:25<00:05,  2.13it/s]propagate in video:  94%|█████████▍| 189/200 [01:25<00:05,  2.13it/s]propagate in video:  95%|█████████▌| 190/200 [01:26<00:04,  2.13it/s]propagate in video:  96%|█████████▌| 191/200 [01:26<00:04,  2.13it/s]propagate in video:  96%|█████████▌| 192/200 [01:27<00:03,  2.13it/s]propagate in video:  96%|█████████▋| 193/200 [01:27<00:03,  2.13it/s]propagate in video:  97%|█████████▋| 194/200 [01:28<00:02,  2.13it/s]propagate in video:  98%|█████████▊| 195/200 [01:28<00:02,  2.13it/s]propagate in video:  98%|█████████▊| 196/200 [01:29<00:01,  2.13it/s]propagate in video:  98%|█████████▊| 197/200 [01:29<00:01,  2.13it/s]propagate in video:  99%|█████████▉| 198/200 [01:30<00:00,  2.13it/s]propagate in video: 100%|█████████▉| 199/200 [01:30<00:00,  2.13it/s]propagate in video: 100%|██████████| 200/200 [01:31<00:00,  2.13it/s]propagate in video: 100%|██████████| 200/200 [01:31<00:00,  2.20it/s]
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            aten::empty         0.87%     780.654ms         0.87%     780.905ms       5.293us       0.000us         0.00%       0.000us       0.000us        147527  
+                                               aten::to         0.01%      11.125ms         0.78%     700.001ms      33.163us       0.000us         0.00%     591.109ms      28.004us         21108  
+                                       aten::lift_fresh         0.00%     486.941us         0.00%     486.941us       1.205us       0.000us         0.00%       0.000us       0.000us           404  
+                                          aten::detach_         0.00%      77.829us         0.00%      77.829us       0.382us       0.000us         0.00%       0.000us       0.000us           204  
+                                            aten::slice         0.06%      57.277ms         0.08%      72.961ms       3.772us       0.000us         0.00%       0.000us       0.000us         19341  
+                                       aten::as_strided         0.26%     237.983ms         0.26%     237.983ms       0.887us       0.000us         0.00%       0.000us       0.000us        268353  
+                                        aten::unsqueeze         0.04%      31.582ms         0.05%      40.747ms       3.703us       0.000us         0.00%       0.000us       0.000us         11005  
+                                            aten::zeros         0.00%       1.657ms         0.86%     779.004ms       1.948ms       0.000us         0.00%     544.110us       1.360us           400  
+                                            aten::zero_         0.00%       3.013ms         0.87%     782.103ms     977.629us       0.000us         0.00%      19.537ms      24.421us           800  
+                                            aten::fill_         0.87%     779.373ms         0.88%     792.578ms     440.321us      20.832ms         0.03%      20.832ms      11.573us          1800  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 90.081s
+Self CUDA time total: 77.796s
+
+
+Memory Usage per Sub-Layer:
+Sub-layer 0 (memory_attention.layers.: norm1 -> self_attn.out_proj): Max allocated memory = 23052288 bytes (22512.00 KB, 21.98 MB)
+Sub-layer 1 (memory_attention.layers.: norm2 -> cross_attn_image.out_proj): Max allocated memory = 81887232 bytes (79968.00 KB, 78.09 MB)
+Sub-layer 2 (memory_attention.layers.: norm3 -> linear2): Max allocated memory = 38797312 bytes (37888.00 KB, 37.00 MB)
+Sub-layer 3 (sam_mask_decoder.transformer.layers.: self_attn.q_proj -> self_attn.out_proj): Max allocated memory = 36864 bytes (36.00 KB, 0.04 MB)
+Sub-layer 4 (sam_mask_decoder.transformer.layers.: norm1 -> cross_attn_token_to_image.out_proj): Max allocated memory = 10502144 bytes (10256.00 KB, 10.02 MB)
+Sub-layer 5 (sam_mask_decoder.transformer.layers.: norm2 -> mlp.layers.1): Max allocated memory = 73728 bytes (72.00 KB, 0.07 MB)
+Sub-layer 6 (sam_mask_decoder.transformer.layers.: norm3 -> cross_attn_image_to_token.out_proj): Max allocated memory = 10485760 bytes (10240.00 KB, 10.00 MB)
+Sub-layer 7 (image_encoder.trunk.blocks.: norm1 -> proj): Max allocated memory = 303038464 bytes (295936.00 KB, 289.00 MB)
+Sub-layer 8 (image_encoder.trunk.blocks.: norm2 -> mlp.layers.1): Max allocated memory = 188743680 bytes (184320.00 KB, 180.00 MB)
+Sub-layer 9 (image_encoder.neck.convs.: 0.conv -> 3.conv): Max allocated memory = 116344832 bytes (113618.00 KB, 110.96 MB)
+Sub-layer 10 (memory_encoder.mask_downsampler.: encoder.0 -> encoder.12): Max allocated memory = 5242880 bytes (5120.00 KB, 5.00 MB)
+Sub-layer 11 (memory_encoder.fuser.layers.: 0.dwconv -> 1.pwconv2): Max allocated memory = 22020096 bytes (21504.00 KB, 21.00 MB)
