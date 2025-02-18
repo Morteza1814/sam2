@@ -10,6 +10,7 @@ from PIL import Image
 from sam2.build_sam import build_sam2_video_predictor
 from torch.profiler import profile, record_function, ProfilerActivity
 import gc
+import time
 
 def show_mask(mask, ax, obj_id=None, random_color=False):
     if random_color:
@@ -45,7 +46,11 @@ def log_memory_usage(tag=""):
 
 checkpoint = "/bigtemp/rgq5aw/samData/checkpoints/sam2.1_hiera_large.pt"
 model_cfg = "configs/sam2.1/sam2.1_hiera_l.yaml"
+start_time = time.time()
 predictor = build_sam2_video_predictor(model_cfg, checkpoint)
+end_time = time.time()
+
+print(f"Model load Time: {end_time - start_time:.2f} seconds")
 # print(predictor)
 
 # # #  profiling all layers of SAM2
@@ -146,12 +151,16 @@ memory_records = hook_registerar(predictor, layers)
 video_dir = "/bigtemp/rgq5aw/samData/videos/sav_dataset/sav_test/JPEGImages_24fps/sav_010681"
 
 # scan all the JPEG frame names in this directory
+start_time = time.time()
 frame_names = [
     p for p in os.listdir(video_dir)
     if os.path.splitext(p)[-1] in [".jpg", ".jpeg", ".JPG", ".JPEG"]
 ]
 
 frame_names.sort(key=lambda p: int(os.path.splitext(p)[0]))
+end_time = time.time()
+
+print(f"Time to scan all the frames: {end_time - start_time} s")
 
 # Select the first video frame
 # frame_idx = 0
@@ -182,7 +191,10 @@ frame_names.sort(key=lambda p: int(os.path.splitext(p)[0]))
 with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_shapes=True) as prof:
     # with record_function("SAM2_inference"):
     # log_memory_usage("Before Init State")
+    start_time = time.time()
     inference_state = predictor.init_state(video_path=video_dir)
+    end_time = time.time()
+    print(f"Time to init state: {end_time - start_time} s")
     # log_memory_usage("After Init State")
     ann_frame_idx = 0  # the frame index we interact with
     ann_obj_id = 1  # give a unique id to each object we interact with (it can be any integers)
@@ -244,7 +256,7 @@ with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_sh
 # print(prof.key_averages().table(sort_by="cuda_time_total", row_limit=20))
 print(prof.key_averages().table(sort_by="self_cuda_memory_usage", row_limit=10))
 # Export trace for visualization in Chrome Tracing (`chrome://tracing/`)
-prof.export_chrome_trace("sam2_profile.json")
+# prof.export_chrome_trace("sam2_profile.json")
 
 # print("max_allocated:", max_allocated)
 
