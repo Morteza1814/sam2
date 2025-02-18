@@ -43,7 +43,6 @@ def log_memory_usage(tag=""):
     print(f"Reserved: {torch.cuda.memory_reserved() / 1e6:.2f} MB")
     print(f"Max Reserved: {torch.cuda.max_memory_reserved() / 1e6:.2f} MB\n")
 
-
 checkpoint = "/bigtemp/rgq5aw/samData/checkpoints/sam2.1_hiera_large.pt"
 model_cfg = "configs/sam2.1/sam2.1_hiera_l.yaml"
 predictor = build_sam2_video_predictor(model_cfg, checkpoint)
@@ -79,20 +78,32 @@ def cross_attn_sub_layer_memory_hook(module, name, is_start, memory_records, ind
             print(f"Skipping hook for {name} because the module is None!")
             return
 
-        torch.cuda.synchronize()  # Ensure accurate memory readings
+        torch.cuda.synchronize()  # Ensure accurate memory and timing readings
         allocated_memory = torch.cuda.memory_allocated()
-        
+
         if is_start:
             memory_records[index]['before'] = allocated_memory
+            memory_records[index]['start_event'].record()  # Record start event
         else:
             layer_memory = allocated_memory - memory_records[index]['before']
             memory_records[index]['max'] = max(memory_records[index]['max'], layer_memory)
+            
+            memory_records[index]['end_event'].record()  # Record end event
+            torch.cuda.synchronize()  # Ensure timing accuracy
+            elapsed_time = memory_records[index]['start_event'].elapsed_time(memory_records[index]['end_event'])
+            
+            # Accumulate execution time
+            memory_records[index]['execution_time'] += elapsed_time
+
     except Exception as e:
         print(f"Hook execution failed for {name}: {e}")
 
 def hook_registerar(predictor, layers):
-    memory_records = [{'before': 0, 'max': 0, 'layer': layer} for layer in layers]
-    
+    memory_records = [{'before': 0, 'max': 0, 'execution_time': 0.0, 'layer': layer, 
+                       'start_event': torch.cuda.Event(enable_timing=True), 
+                       'end_event': torch.cuda.Event(enable_timing=True)} 
+                      for layer in layers]
+        
     for name, mod in predictor.named_modules():
         for idx, layer in enumerate(layers):
             layer_name, start, end = layer
@@ -131,8 +142,8 @@ layers = [
 
 memory_records = hook_registerar(predictor, layers)
 
-video_dir = "/bigtemp/rgq5aw/samData/videos/bedroom"
-# video_dir = "/bigtemp/rgq5aw/samData/videos/sav_dataset/sav_test/JPEGImages_24fps/sav_010681"
+# video_dir = "/bigtemp/rgq5aw/samData/videos/bedroom"
+video_dir = "/bigtemp/rgq5aw/samData/videos/sav_dataset/sav_test/JPEGImages_24fps/sav_010681"
 
 # scan all the JPEG frame names in this directory
 frame_names = [
@@ -243,7 +254,10 @@ for idx, record in enumerate(memory_records):
     max_bytes = record['max']
     max_kb = max_bytes / 1024
     max_mb = max_kb / 1024
-    print(f"Sub-layer {idx} ({record['layer'][0]}: {record['layer'][1]} -> {record['layer'][2]}): Max allocated memory = {max_bytes} bytes ({max_kb:.2f} KB, {max_mb:.2f} MB)")
+    time_ms = record['execution_time']
+    time_s = time_ms / 1000
+    print(f"Sub-layer {idx} ({record['layer'][0]}: {record['layer'][1]} -> {record['layer'][2]}): Max allocated memory = {max_bytes} bytes ({max_kb:.2f} KB, {max_mb:.2f} MB)"
+           f" Total Execution Time: {record['execution_time']:.2f} ms ({time_s:.2f} s)")
 
 # Clean up
 gc.collect()
