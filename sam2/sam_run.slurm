@@ -2,9 +2,10 @@
 
 #SBATCH --partition=gpu
 #SBATCH --gpus=1
+#SBATCH --constraint="h100_94gb"
 #SBATCH --job-name=sam_run
-#SBATCH --mem=50000
-#SBATCH --time=00:20:00
+#SBATCH --mem=300000
+#SBATCH --time=20:20:00
 #SBATCH --output=sam_run.txt
 #SBATCH --error=sam_run.txt
 

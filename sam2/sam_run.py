@@ -145,10 +145,13 @@ layers = [
     ("memory_encoder.fuser.layers.", "0.dwconv", "1.pwconv2"), # conv
 ]
 
-memory_records = hook_registerar(predictor, layers)
+# memory_records = hook_registerar(predictor, layers)
 
 # video_dir = "/bigtemp/rgq5aw/samData/videos/bedroom"
-video_dir = "/bigtemp/rgq5aw/samData/videos/sav_dataset/sav_test/JPEGImages_24fps/sav_010681"
+# video_dir = "/bigtemp/rgq5aw/samData/videos/sav_dataset/sav_test/JPEGImages_24fps/sav_010681"
+# video_dir = "/bigtemp/rgq5aw/samData/videos/youtube/soccer"
+video_dir = "/bigtemp/rgq5aw/samData/videos/0030/frames/jpg"
+
 
 # scan all the JPEG frame names in this directory
 start_time = time.time()
@@ -200,9 +203,9 @@ with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_sh
     ann_obj_id = 1  # give a unique id to each object we interact with (it can be any integers)
 
     # Let's add a positive click at (x, y) = (210, 350) to get started
-    points = np.array([[210, 350], [250, 220]], dtype=np.float32)
+    points = np.array([[154, 436]], dtype=np.float32)
     # for labels, `1` means positive click and `0` means negative click
-    labels = np.array([1, 1], np.int32)
+    labels = np.array([1], np.int32)
 
     # with prof:
         # log_memory_usage("Before Add New Points")
@@ -241,35 +244,35 @@ with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_sh
     # prof.step()
     # prof.export_chrome_trace("./log/profiler_trace.json")  # Save raw logs
     # render the segmentation results every few frames
-    # vis_frame_stride = 30
-    # plt.close("all")
-    # for out_frame_idx in range(0, len(frame_names), vis_frame_stride):
-    #     plt.figure(figsize=(6, 4))
-    #     plt.title(f"frame {out_frame_idx}")
-    #     plt.imshow(Image.open(os.path.join(video_dir, frame_names[out_frame_idx])))
-    #     for out_obj_id, out_mask in video_segments[out_frame_idx].items():
-    #         show_mask(out_mask, plt.gca(), obj_id=out_obj_id)
-    #         # Save the figure
-    #         output_path =  f"out/frame_{out_frame_idx}.png"
-    #         plt.savefig(output_path, bbox_inches="tight")  # Adjust bbox_inches for saving the complete figure
-    #         plt.close()  # Close the figure to release memory
+    vis_frame_stride = 1
+    plt.close("all")
+    for out_frame_idx in range(0, len(frame_names), vis_frame_stride):
+        plt.figure(figsize=(6, 4))
+        plt.title(f"frame {out_frame_idx}")
+        plt.imshow(Image.open(os.path.join(video_dir, frame_names[out_frame_idx])))
+        for out_obj_id, out_mask in video_segments[out_frame_idx].items():
+            show_mask(out_mask, plt.gca(), obj_id=out_obj_id)
+            # Save the figure
+            output_path =  f"out/frame_{out_frame_idx}.png"
+            plt.savefig(output_path, bbox_inches="tight")  # Adjust bbox_inches for saving the complete figure
+            plt.close()  # Close the figure to release memory
 # print(prof.key_averages().table(sort_by="cuda_time_total", row_limit=20))
-print(prof.key_averages().table(sort_by="self_cuda_memory_usage", row_limit=10))
+# print(prof.key_averages().table(sort_by="self_cuda_memory_usage", row_limit=10))
 # Export trace for visualization in Chrome Tracing (`chrome://tracing/`)
 # prof.export_chrome_trace("sam2_profile.json")
 
 # print("max_allocated:", max_allocated)
 
 # After running the model, print memory consumption results
-print("\nMemory Usage per Sub-Layer:")
-for idx, record in enumerate(memory_records):
-    max_bytes = record['max']
-    max_kb = max_bytes / 1024
-    max_mb = max_kb / 1024
-    time_ms = record['execution_time']
-    time_s = time_ms / 1000
-    print(f"Sub-layer {idx} ({record['layer'][0]}: {record['layer'][1]} -> {record['layer'][2]}): Max allocated memory = {max_bytes} bytes ({max_kb:.2f} KB, {max_mb:.2f} MB)"
-           f" Total Execution Time: {record['execution_time']:.2f} ms ({time_s:.2f} s)")
+# print("\nMemory Usage per Sub-Layer:")
+# for idx, record in enumerate(memory_records):
+#     max_bytes = record['max']
+#     max_kb = max_bytes / 1024
+#     max_mb = max_kb / 1024
+#     time_ms = record['execution_time']
+#     time_s = time_ms / 1000
+#     print(f"Sub-layer {idx} ({record['layer'][0]}: {record['layer'][1]} -> {record['layer'][2]}): Max allocated memory = {max_bytes} bytes ({max_kb:.2f} KB, {max_mb:.2f} MB)"
+#            f" Total Execution Time: {record['execution_time']:.2f} ms ({time_s:.2f} s)")
 
 # Clean up
 gc.collect()
