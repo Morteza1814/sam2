@@ -57,7 +57,7 @@ def get_args_parser():
         "--partition", type=str, required=True, help="Partition to launch on."
     )
     launch_parser.add_argument(
-        "--account", type=str, required=True, help="Partition to launch on."
+        "--account", type=str, required=False, help="Partition to launch on."
     )
     launch_parser.add_argument("--qos", type=str, required=True, help="QOS.")
 
@@ -142,6 +142,7 @@ if __name__ == "__main__":
         slurm_partition=args.partition,
         slurm_account=args.account,
         slurm_qos=args.qos,
+        mem_gb=32
     )
     executor.update_parameters(slurm_srun_args=["-vv", "--cpu-bind", "none"])
 
