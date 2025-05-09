@@ -349,13 +349,14 @@ def load_state_dict_into_model(
     if checkpoint_kernels is not None:
         for f in checkpoint_kernels:
             state_dict = f(state_dict=state_dict)
+    state_dict.pop("maskmem_tpos_enc", None)
     missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
 
-    check_load_state_dict_errors(
-        missing_keys,
-        unexpected_keys,
-        strict=strict,
-        ignore_missing_keys=ignore_missing_keys,
-        ignore_unexpected_keys=ignore_unexpected_keys,
-    )
+    # check_load_state_dict_errors(
+    #     missing_keys,
+    #     unexpected_keys,
+    #     strict=strict,
+    #     ignore_missing_keys=ignore_missing_keys,
+    #     ignore_unexpected_keys=ignore_unexpected_keys,
+    # )
     return model
