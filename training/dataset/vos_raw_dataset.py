@@ -268,7 +268,13 @@ class JSONRawDataset(VOSRawDataset):
         Given a VOSVideo object, return the mask tensors.
         """
         video_name = self.video_names[video_idx]
-        video_json_path = os.path.join(self.gt_folder, video_name + "_manual.json")
+        # video_json_path = os.path.join(self.gt_folder, video_name + "_manual.json")
+        # For video_name like 'sav_031356', extract prefix 'sav_031'
+        video_subdir = "_".join(video_name.split("_")[:2])
+        video_subdir = f"{video_subdir[:3]}_{video_subdir[4:7]}"  # 'sav_031'
+        video_json_path = os.path.join(self.gt_folder, video_subdir, video_name + "_manual.json")
+
+
         segment_loader = JSONSegmentLoader(
             video_json_path=video_json_path,
             ann_every=self.ann_every,
