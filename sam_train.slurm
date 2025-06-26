@@ -2,7 +2,7 @@
 
 #SBATCH --partition=gpu
 #SBATCH --gpus=4
-#SBATCH --constraint="a100_40gb|a40"
+#SBATCH --constraint="a100_40gb|a40|h100_94gb|a100_80gb"
 #SBATCH --job-name=sam_train
 #SBATCH --mem=100000
 #SBATCH --time=4-00:00:00
@@ -15,6 +15,6 @@
 
 
 python3 training/train.py \
-    -c configs/sam2.1_training/sam2.1_hiera_b+_SAV_finetune.yaml \
+    -c configs/sam2.1_training/sam2.1_hiera_b+_MOSE_finetune.yaml \
     --use-cluster 0 \
     --num-gpus 4

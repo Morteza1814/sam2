@@ -47,8 +47,13 @@ def log_memory_usage(tag=""):
 # checkpoint = "/bigtemp/rgq5aw/samData/checkpoints/sam2.1_hiera_large.pt"
 # model_cfg = "configs/sam2.1/sam2.1_hiera_l.yaml"
 ## generated checkpoint
-checkpoint = "/bigtemp/rgq5aw/samData/checkpoints/generateChkpoints/checkpoint_FineTune_ImageEncFrozen_MOSE_5videos_5epochs_512nummaskmem.pt"
-model_cfg = "configs/sam2.1/sam2.1_hiera_b+.yaml"
+# checkpoint = "/bigtemp/rgq5aw/samData/checkpoints/sam2.1_hiera_base_plus.pt"
+checkpoint = "/p/lava/morteza/sam2/checkpoints/sam2.1_hiera_large.pt"
+model_cfg = "configs/sam2.1/sam2.1_hiera_l.yaml"
+
+# checkpoint = "/p/lava/morteza/sam2/checkpoints/generatedChkpnts/chkpnt_FineTune_ImageEncFrozen_MOSE_5videos_5epochs_256nummaskmem.pt"
+# model_cfg = "configs/sam2.1/sam2.1_hiera_b+.yaml"
+
 start_time = time.time()
 predictor = build_sam2_video_predictor(model_cfg, checkpoint)
 end_time = time.time()
@@ -57,25 +62,25 @@ print(f"Model load Time: {end_time - start_time:.2f} seconds")
 # print(predictor)
 
 # # #  profiling all layers of SAM2
-# def shape_memory_hook(module, input, output):
-#     torch.cuda.synchronize()  # Ensure accurate memory readings
-#     input_shapes = [inp.shape for inp in input]
-#     output_shapes = [out.shape for out in output] if isinstance(output, (tuple, list)) else [output.shape]
+def shape_memory_hook(module, input, output):
+    torch.cuda.synchronize()  # Ensure accurate memory readings
+    input_shapes = [inp.shape for inp in input]
+    output_shapes = [out.shape for out in output] if isinstance(output, (tuple, list)) else [output.shape]
 
-#     # Find the module's hierarchical name in the model
-#     for name, mod in predictor.named_modules():
-#         if mod is module:
-#             module_name = name  # Get full hierarchical module name
+    # Find the module's hierarchical name in the model
+    for name, mod in predictor.named_modules():
+        if mod is module:
+            module_name = name  # Get full hierarchical module name
 
-#     print(f"\n Layer: {module.__class__.__name__}")
-#     print(f" Full Module Path: {module_name}")  # Now prints full hierarchy!
-#     print(f" Input Shapes: {input_shapes}")
-#     print(f" Output Shapes: {output_shapes}")
-#     print(f" Allocated Memory: {torch.cuda.memory_allocated() / 1e6:.2f} MB")
-#     print(f" Max Allocated: {torch.cuda.max_memory_allocated() / 1e6:.2f} MB\n")
+    print(f"\n Layer: {module.__class__.__name__}")
+    print(f" Full Module Path: {module_name}")  # Now prints full hierarchy!
+    print(f" Input Shapes: {input_shapes}")
+    print(f" Output Shapes: {output_shapes}")
+    print(f" Allocated Memory: {torch.cuda.memory_allocated() / 1e6:.2f} MB")
+    print(f" Max Allocated: {torch.cuda.max_memory_allocated() / 1e6:.2f} MB\n")
 
 
-# # Register hooks on relevant layers
+# Register hooks on relevant layers
 # for layer in predictor.modules():
 #     if isinstance(layer, (torch.nn.Linear, torch.nn.Conv2d, torch.nn.MultiheadAttention, torch.nn.LayerNorm, torch.nn.ReLU, torch.nn.Sigmoid)):
 #         layer.register_forward_hook(shape_memory_hook)
@@ -151,9 +156,19 @@ layers = [
 memory_records = hook_registerar(predictor, layers)
 
 # video_dir = "/bigtemp/rgq5aw/samData/videos/bedroom"
-video_dir = "/bigtemp/rgq5aw/samData/videos/sav_dataset/sav_test/JPEGImages_24fps/sav_010681"
+# video_dir = "/bigtemp/rgq5aw/samData/videos/sav_dataset/sav_test/JPEGImages_24fps/sav_010681"
 # video_dir = "/bigtemp/rgq5aw/samData/videos/youtube/soccer"
-# video_dir = "/bigtemp/rgq5aw/samData/videos/0030/frames/jpg"
+# video_dir = "/bigtemp/rgq5aw/samData/videos/sav_000035/frames"
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/UwIAeQBN"
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/T4pEUdxQ"
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/RCgebO9V" # Motorcycle
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/QzXgVWBy" # Bottles
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/O6ZRSpJL" # Firefighter
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/qeD7QcDW" # Lions
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/NcmcChkl" # Beach Volleyball
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/IVLKc8j7" # Fish
+# video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/ealukzgh" # Elephant and Red ball
+video_dir = "/p/lava/morteza/sam2/datasets/longSam/JPEGImages/DDuADd7f" # kid and family
 
 
 # scan all the JPEG frame names in this directory
@@ -205,20 +220,114 @@ with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_sh
     ann_frame_idx = 0  # the frame index we interact with
     ann_obj_id = 1  # give a unique id to each object we interact with (it can be any integers)
 
-    # Let's add a positive click at (x, y) = (210, 350) to get started
-    points = np.array([[154, 436]], dtype=np.float32)
-    # for labels, `1` means positive click and `0` means negative click
-    labels = np.array([1], np.int32)
 
-    # with prof:
-        # log_memory_usage("Before Add New Points")
-    _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
-        inference_state=inference_state,
-        frame_idx=ann_frame_idx,
-        obj_id=ann_obj_id,
-        points=points,
-        labels=labels,
-    )
+    # Example for multiple objects
+    objects = [
+        # {
+        #     "points": np.array([
+        #         [740, 290],  # motorcycle
+        #         [735, 310],  # driver
+        #     ], dtype=np.float32),
+        #     "labels": np.array([1, 1], dtype=np.int32),
+        #     "obj_id": 1
+        # }
+
+        # {   # Object 1
+        #     "points": np.array([
+        #         [760, 800],  # center of the left Guinness bottle
+        #     ], dtype=np.float32),
+        #     "labels": np.array([1], dtype=np.int32),
+        #     "obj_id": 1
+        # }
+
+        # {   # Object 1
+        #     "points": np.array([
+        #         [460, 430],  # center of left firefighter (roughly torso area)
+        #     ], dtype=np.float32),
+        #     "labels": np.array([1], dtype=np.int32),
+        #     "obj_id": 1
+        # }
+
+        # {   # Object 1
+        #     "points": np.array([
+        #         [1120, 660],  # center of the bottom-right ball in lion cage
+        #     ], dtype=np.float32),
+        #     "labels": np.array([1], dtype=np.int32),
+        #     "obj_id": 1
+        # }
+
+        # {   # Object 1
+        #     "points": np.array([
+        #         [770, 600],  # Beach volleyball player
+        #     ], dtype=np.float32),
+        #     "labels": np.array([1], dtype=np.int32),
+        #     "obj_id": 1
+        # }
+
+        # {   # Object 1
+        #     "points": np.array([
+        #         [200, 1],  # Big fish
+        #     ], dtype=np.float32),
+        #     "labels": np.array([1], dtype=np.int32),
+        #     "obj_id": 1
+        # }
+
+        # {   # Object 1
+        #     "points": np.array([
+        #         [1, 600],  # center of the blue ball elephant
+        #     ], dtype=np.float32),
+        #     "labels": np.array([1], dtype=np.int32),
+        #     "obj_id": 1
+        # }
+
+        {   # Object 1
+            "points": np.array([
+                [600, 500],  # center of the kid family (head/upper body area)
+            ], dtype=np.float32),
+            "labels": np.array([1], dtype=np.int32),
+            "obj_id": 1
+        }
+
+
+        # {   # Object 2
+        #     "points": np.array([[1000, 530]], dtype=np.float32),
+        #     "labels": np.array([1], dtype=np.int32),
+        #     "obj_id": 2
+        # },
+        # {   # Object 3
+        #     "points": np.array([[1200, 450]], dtype=np.float32),
+        #     "labels": np.array([1], dtype=np.int32),
+        #     "obj_id": 3
+        # },
+    ]
+
+    # For each object, add prompt and run segmentation
+    for obj in objects:
+        print(f"\n=== Adding Object {obj['obj_id']} ===\n")
+        _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
+            inference_state=inference_state,
+            frame_idx=ann_frame_idx,
+            obj_id=obj["obj_id"],
+            points=obj["points"],
+            labels=obj["labels"],
+        )
+
+   # points = np.array([
+    #     [1000, 530]  # center of the girl in front (rightmost)
+    # ], dtype=np.float32)
+
+    # labels = np.array([1], dtype=np.int32)
+
+
+    # # with prof:
+    #     # log_memory_usage("Before Add New Points")
+    # _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
+    #     inference_state=inference_state,
+    #     frame_idx=ann_frame_idx,
+    #     obj_id=ann_obj_id,
+    #     points=points,
+    #     labels=labels,
+    # )
         # log_memory_usage("After Add New Points")
         # Create the figure
     # plt.figure(figsize=(9, 6))
@@ -249,6 +358,7 @@ with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_sh
     # render the segmentation results every few frames
     vis_frame_stride = 1
     plt.close("all")
+    os.makedirs("out", exist_ok=True)
     for out_frame_idx in range(0, len(frame_names), vis_frame_stride):
         plt.figure(figsize=(6, 4))
         plt.title(f"frame {out_frame_idx}")

@@ -4,18 +4,18 @@ scratch:
   resolution: 1024
   train_batch_size: 1
   num_train_workers: 10
-  num_frames: 16
+  num_frames: 4
   max_num_objects: 3
   base_lr: 5.0e-6
   vision_lr: 3.0e-06
   phases_per_epoch: 1
-  num_epochs: 5
+  num_epochs: 8
 
 dataset:
   # PATHS to Dataset
-  img_folder: /bigtemp/rgq5aw/samData/trainingData/train/JPEGImages/ # PATH to MOSE JPEGImages folder
-  gt_folder: /bigtemp/rgq5aw/samData/trainingData/train/Annotations/  # PATH to MOSE Annotations folder
-  file_list_txt: training/assets/MOSE_sample_train_list_small.txt # Optional PATH to filelist containing a subset of videos to be used for training
+  img_folder: /p/lava/morteza/sam2/datasets/mose/train/JPEGImages/ # PATH to MOSE JPEGImages folder
+  gt_folder: /p/lava/morteza/sam2/datasets/mose/train/Annotations/  # PATH to MOSE Annotations folder
+  file_list_txt: training/assets/MOSE_train_full.txt # Optional PATH to filelist containing a subset of videos to be used for training
 
   multiplier: 2
 
@@ -143,7 +143,7 @@ trainer:
             use_dwconv: True  # depth-wise convs
           num_layers: 2
 
-    num_maskmem: 7
+    num_maskmem: 32
     image_size: ${scratch.resolution}
     # apply scaled sigmoid on mask logits for memory encoder, and directly feed input mask as output mask
     sigmoid_scale_for_mem_enc: 20.0
@@ -319,7 +319,7 @@ trainer:
 
       state_dict:
         _target_: training.utils.checkpoint_utils.load_checkpoint_and_apply_kernels
-        checkpoint_path: /bigtemp/rgq5aw/samData/checkpoints/sam2.1_hiera_base_plus.pt # PATH to SAM 2.1 checkpoint
+        checkpoint_path: /p/lava/morteza/sam2/checkpoints/sam2.1_hiera_base_plus.pt # PATH to SAM 2.1 checkpoint
         ckpt_state_dict_keys: ['model']
 
 launcher:
