@@ -1,0 +1,1 @@
+find frames/ -mindepth 1 -maxdepth 1 -type d | xargs -P 80 -I {} rm -rf {}
