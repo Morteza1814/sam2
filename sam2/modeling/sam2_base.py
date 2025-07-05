@@ -135,13 +135,6 @@ class SAM2Base(torch.nn.Module):
         )
         trunc_normal_(self.maskmem_tpos_enc, std=0.02)
         
-        # freeze the first 7 frames of the temporal positional encoding
-        # if num_maskmem > 7:
-        #     # Freeze the first 7 frames
-        #     self.maskmem_tpos_enc.requires_grad = True
-        #     with torch.no_grad():
-        #         self.maskmem_tpos_enc.data[:7].requires_grad = False
-
         # a single token to indicate no memory embedding from previous frames
         self.no_mem_embed = torch.nn.Parameter(torch.zeros(1, 1, self.hidden_dim))
         self.no_mem_pos_enc = torch.nn.Parameter(torch.zeros(1, 1, self.hidden_dim))

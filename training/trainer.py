@@ -53,6 +53,7 @@ from training.utils.train_utils import (
     setup_distributed_backend,
 )
 
+from training.utils.freeze_utils import freeze_first_memory_tokens 
 
 CORE_LOSS_KEY = "core_loss"
 
@@ -887,6 +888,40 @@ class Trainer:
                     extra_loss_key, self.device, ":.2e"
                 )
             extra_loss_mts[extra_loss_key].update(extra_loss.item(), batch_size)
+        
+        # temporary logs
+        if get_rank() == 0 and self.steps[phase] < 5:   # first backward only
+            enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
+            print("▶ grad rows 0-6:", enc_grad[:7].abs().max().item())
+            print("▶ grad rows 7-end:", enc_grad[7:].abs().max().item())
+        if get_rank() == 0 and self.steps[phase] % 100 == 0:    # print every 100 steps
+            # unwrap DDP to access the real Parameter object
+            enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
+            if enc_grad is not None:
+                g_frozen = enc_grad[:7].abs().max().item()       # rows 0-6
+                g_train  = enc_grad[7:].abs().max().item()       # rows 7-end
+                if g_frozen > 1e-12:                            # leak threshold
+                    logging.warning(
+                        f"[Freeze-leak] maskmem_tpos_enc rows 0-6 grad max={g_frozen:.2e}"
+                    )
+                else:
+                    logging.debug(
+                        f"[Freeze-OK] rows0-6 grad={g_frozen:.2e}, rows7-end={g_train:.2e}"
+                    )
+
+
+        # if self.steps[phase] % 100 == 0:          
+        #     # unwrap DDP to access the real module
+        #     param_dict = dict(
+        #         unwrap_ddp_if_wrapped(self.model).named_parameters()
+        #     )
+        #     for n, ref in self._frozen_snapshot.items():
+        #         curr = param_dict[n].detach()
+        #         if ref.device != curr.device:
+        #             ref = ref.to(curr.device, non_blocking=True)    
+        #         if not torch.equal(curr, ref):
+        #             # raise RuntimeError(f"🚨  Parameter '{n}' changed although it is frozen.")
+        #             logging.warning(f"[Freeze-leak] {n} moved by {(curr-ref).abs().max():.4e}")
 
     def _log_meters_and_save_best_ckpts(self, phases: List[str]):
         logging.info("Synchronizing meters")
@@ -993,7 +1028,15 @@ class Trainer:
         self.logger = Logger(self.logging_conf)
 
         self.model = instantiate(self.model_conf, _convert_="all")
+        freeze_first_memory_tokens(self.model, n_tokens=7)
         print_model_summary(self.model)
+
+        # Snapshot all tensors that are supposed to stay frozen
+        # self._frozen_snapshot = {
+        #     n: p.detach().clone()
+        #     for n, p in self.model.named_parameters()
+        #     if not p.requires_grad          # <-   frozen by your flags
+        # }
 
         self.loss = None
         if self.loss_conf:

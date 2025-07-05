@@ -66,6 +66,9 @@ class SAM2Train(SAM2Base):
         # of all frames at once. This avoids backbone OOM errors on very long videos in evaluation, but could be slightly slower.
         forward_backbone_per_frame_for_eval=False,
         freeze_image_encoder=True,
+        freeze_memory_encoder=True,
+        freeze_memory_attention=True,
+        freeze_decoder=True,
         **kwargs,
     ):
         super().__init__(image_encoder, memory_attention, memory_encoder, **kwargs)
@@ -104,6 +107,18 @@ class SAM2Train(SAM2Base):
             for p in self.image_encoder.parameters():
                 p.requires_grad = False
 
+        def _freeze(module):
+            for p in module.parameters():
+                p.requires_grad = False
+
+        if freeze_memory_encoder and self.memory_encoder is not None:
+            _freeze(self.memory_encoder)
+        if freeze_memory_attention and self.memory_attention is not None:
+            _freeze(self.memory_attention)
+        if freeze_decoder and hasattr(self, "sam_mask_decoder"):
+            _freeze(self.sam_mask_decoder)
+        
+        
     def forward(self, input: BatchedVideoDatapoint):
         if self.training or not self.forward_backbone_per_frame_for_eval:
             # precompute image features on all frames before tracking
