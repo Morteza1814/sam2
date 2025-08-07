@@ -890,13 +890,17 @@ class Trainer:
             extra_loss_mts[extra_loss_key].update(extra_loss.item(), batch_size)
         
         # temporary logs
-        if get_rank() == 0 and self.steps[phase] < 5:   # first backward only
+        if get_rank() == 0 and self.steps[phase] % 100 == 0:   # first backward only
             enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
             print("▶ grad rows 0-6:", enc_grad[:7].abs().max().item())
             print("▶ grad rows 7-end:", enc_grad[7:].abs().max().item())
-        if get_rank() == 0 and self.steps[phase] % 100 == 0:    # print every 100 steps
+            m = unwrap_ddp_if_wrapped(self.model)
+            if hasattr(m, "alpha"):
+                a = float(m.alpha.detach().cpu())
+                alpha_tanh = math.tanh(a)
+                print(f"[sanity] step={self.steps[phase]}  alpha={a:.6f}  tanh(alpha)={alpha_tanh:.6f}")
+                        
             # unwrap DDP to access the real Parameter object
-            enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
             if enc_grad is not None:
                 g_frozen = enc_grad[:7].abs().max().item()       # rows 0-6
                 g_train  = enc_grad[7:].abs().max().item()       # rows 7-end

@@ -517,6 +517,9 @@ class SAM2Base(torch.nn.Module):
             pix_feat = current_vision_feats[-1].permute(1, 2, 0).view(B, C, H, W)
             return pix_feat
 
+        S_BANK_FRAMES = 7                                      
+        s_bank_len = 0
+
         num_obj_ptr_tokens = 0
         tpos_sign_mul = -1 if track_in_reverse else 1
         # Step 1: condition the visual features of the current frame on previous memories
@@ -663,7 +666,12 @@ class SAM2Base(torch.nn.Module):
 
         # Step 2: Concatenate the memories and forward through the transformer encoder
         memory = torch.cat(to_cat_memory, dim=0)
-        memory_pos_embed = torch.cat(to_cat_memory_pos_embed, dim=0)
+        memory_pos_embed = torch.cat(to_cat_memory_pos_embed, dim=0)               
+
+        s_bank_len = sum(m.shape[0] for m in to_cat_memory) - num_obj_ptr_tokens
+
+        if s_bank_len > (S_BANK_FRAMES * H * W):
+            s_bank_len = S_BANK_FRAMES * H * W        
 
         pix_feat_with_mem = self.memory_attention(
             curr=current_vision_feats,
@@ -671,7 +679,9 @@ class SAM2Base(torch.nn.Module):
             memory=memory,
             memory_pos=memory_pos_embed,
             num_obj_ptr_tokens=num_obj_ptr_tokens,
+            s_bank_len=s_bank_len,     
         )
+
         # reshape the output (HW)BC => BCHW
         pix_feat_with_mem = pix_feat_with_mem.permute(1, 2, 0).view(B, C, H, W)
         return pix_feat_with_mem

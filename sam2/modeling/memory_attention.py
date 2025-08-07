@@ -98,6 +98,56 @@ class MemoryAttentionLayer(nn.Module):
         tgt = tgt + self.dropout3(tgt2)
         return tgt
 
+class DualMemoryAttentionLayer(MemoryAttentionLayer):
+    def __init__(self, init_alpha: float, *args, **kw):
+        super().__init__(*args, **kw)
+        self.register_parameter('alpha', nn.Parameter(torch.tensor(init_alpha)))
+
+    def forward(self, tgt, memory, pos=None, query_pos=None,
+                s_bank_len: int = 0,          #  NEW
+                num_k_exclude_rope: int = 0):
+
+        # 1) Self-attention (unchanged)
+        tgt = self._forward_sa(tgt, query_pos)
+
+        seq_dim = 1 # if self.batch_first else 0
+
+        ptr_start = memory.shape[seq_dim] - num_k_exclude_rope
+        # print("sbank_len: ", s_bank_len, "ptr_start: ", ptr_start, "num_k_exclude_rop: ", num_k_exclude_rope)
+        # ------- correct slicing ----------
+        if seq_dim: #self.batch_first:                       # memory: (B , Seq , C)
+            s_bank = memory[:, :s_bank_len, :]
+            l_bank = memory[:, s_bank_len:ptr_start, :]
+            p_bank = memory[:, ptr_start:, :]
+            s_pos  = pos[:, :s_bank_len, :]  if pos is not None else None
+            l_pos  = pos[:, s_bank_len:ptr_start, :] if pos is not None else None
+            p_pos  = pos[:, ptr_start:, :]   if pos is not None else None
+        else:                                      # memory: (Seq , B , C)
+            s_bank = memory[:s_bank_len]
+            l_bank = memory[s_bank_len:ptr_start]
+            p_bank = memory[ptr_start:]
+            s_pos  = pos[:s_bank_len]  if pos is not None else None
+            l_pos  = pos[s_bank_len:ptr_start] if pos is not None else None
+            p_pos  = pos[ptr_start:]   if pos is not None else None
+
+        s_mem  = torch.cat([s_bank, p_bank], dim=seq_dim)
+        s_pos_ = torch.cat([s_pos , p_pos ], dim=seq_dim) if s_pos is not None else None
+        # print("smem", s_mem.shape, "s_pos_", s_pos_.shape)
+        tgt_s = self._forward_ca(tgt, s_mem, query_pos, s_pos_, num_k_exclude_rope)
+        if l_bank.shape[seq_dim] > 0:
+            # l_mem  = torch.cat([l_bank, p_bank], dim=seq_dim)
+            # l_pos_ = torch.cat([l_pos , p_pos ], dim=seq_dim) if l_pos is not None else None
+            print("l_bank.shape[seq_dim]: ", l_bank.shape[seq_dim], "l_pos.shape: ", l_pos.shape)
+            tgt_l = self._forward_ca(tgt, l_bank, query_pos, l_pos, 0)
+
+            tgt = tgt_s + torch.tanh(self.alpha) * tgt_l
+        else:
+            tgt = tgt_s
+        # 4) Feed-forward
+        tgt2 = self.norm3(tgt)
+        tgt2 = self.linear2(self.dropout(self.activation(self.linear1(tgt2))))
+        return tgt + self.dropout3(tgt2)
+
 
 class MemoryAttention(nn.Module):
     def __init__(
@@ -123,6 +173,7 @@ class MemoryAttention(nn.Module):
         curr_pos: Optional[Tensor] = None,  # pos_enc for self-attention inputs
         memory_pos: Optional[Tensor] = None,  # pos_enc for cross-attention inputs
         num_obj_ptr_tokens: int = 0,  # number of object pointer *tokens*
+        s_bank_len: int = 0,          # ← NEW
     ):
         if isinstance(curr, list):
             assert isinstance(curr_pos, list)
@@ -151,7 +202,7 @@ class MemoryAttention(nn.Module):
             kwds = {}
             if isinstance(layer.cross_attn_image, RoPEAttention):
                 kwds = {"num_k_exclude_rope": num_obj_ptr_tokens}
-
+            kwds["s_bank_len"] = s_bank_len
             output = layer(
                 tgt=output,
                 memory=memory,
