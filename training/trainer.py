@@ -894,25 +894,15 @@ class Trainer:
             enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
             print("▶ grad rows 0-6:", enc_grad[:7].abs().max().item())
             print("▶ grad rows 7-end:", enc_grad[7:].abs().max().item())
-            m = unwrap_ddp_if_wrapped(self.model)
-            if hasattr(m, "alpha"):
-                a = float(m.alpha.detach().cpu())
-                alpha_tanh = math.tanh(a)
-                print(f"[sanity] step={self.steps[phase]}  alpha={a:.6f}  tanh(alpha)={alpha_tanh:.6f}")
-                        
-            # unwrap DDP to access the real Parameter object
-            if enc_grad is not None:
-                g_frozen = enc_grad[:7].abs().max().item()       # rows 0-6
-                g_train  = enc_grad[7:].abs().max().item()       # rows 7-end
-                if g_frozen > 1e-12:                            # leak threshold
-                    logging.warning(
-                        f"[Freeze-leak] maskmem_tpos_enc rows 0-6 grad max={g_frozen:.2e}"
-                    )
-                else:
-                    logging.debug(
-                        f"[Freeze-OK] rows0-6 grad={g_frozen:.2e}, rows7-end={g_train:.2e}"
-                    )
+            mod = unwrap_ddp_if_wrapped(self.model)   # or:  mod = model.module if hasattr(model, "module") else model
 
+            for name, param in mod.named_parameters():
+                if name.endswith(".alpha"):
+                    val = param.detach().item()
+                    print(
+                        f"{name:40s} = {val:+.6f}  tanh() = {math.tanh(val):+.6f}  "
+                        f"requires_grad={param.requires_grad}"
+                    )      
 
         # if self.steps[phase] % 100 == 0:          
         #     # unwrap DDP to access the real module

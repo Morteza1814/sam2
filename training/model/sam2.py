@@ -115,6 +115,9 @@ class SAM2Train(SAM2Base):
             _freeze(self.memory_encoder)
         if freeze_memory_attention and self.memory_attention is not None:
             _freeze(self.memory_attention)
+            for n, p in self.memory_attention.named_parameters():
+                if n.endswith(".alpha"):          # or `n == "alpha"` if your names are flat
+                    p.requires_grad = True
         if freeze_decoder and hasattr(self, "sam_mask_decoder"):
             _freeze(self.sam_mask_decoder)
         
