@@ -894,7 +894,55 @@ class Trainer:
             enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
             print("▶ grad rows 0-6:", enc_grad[:7].abs().max().item())
             print("▶ grad rows 7-end:", enc_grad[7:].abs().max().item())
+            
             mod = unwrap_ddp_if_wrapped(self.model)   # or:  mod = model.module if hasattr(model, "module") else model
+        # --- helpers ---
+            def _first_param_by_prefix(module, prefix: str):
+                for n, p in module.named_parameters():
+                    if n.startswith(prefix):
+                        return n, p
+                return None, None
+
+            def _slice_param(p: torch.Tensor):
+                # Take a tiny, stable slice for cheap comparisons
+                if p is None:
+                    return None
+                v = p.detach()
+                if v.ndim == 0:
+                    return v.clone()
+                return v.reshape(-1)[:32].clone()
+
+            def _max_abs_diff(a: torch.Tensor, b: torch.Tensor):
+                if a is None or b is None:
+                    return None
+                return (a - b).abs().max().item()
+
+            # Pick one representative param from each module by prefix
+            targets = {
+                "image_encoder": "image_encoder",
+                "memory_attention": "memory_attention",
+                "memory_encoder": "memory_encoder",
+                "mask_decoder": "sam_mask_decoder",
+            }
+
+            # Initialize references once
+            if not hasattr(self, "_freeze_refs"):
+                self._freeze_refs = {}
+                for tag, prefix in targets.items():
+                    n, p = _first_param_by_prefix(mod, prefix)
+                    self._freeze_refs[tag] = _slice_param(p)
+                    print(f"[Freeze check] Stored ref for {tag} from '{n}'")
+            else:
+                # Compare current vs ref
+                for tag, prefix in targets.items():
+                    n, p = _first_param_by_prefix(mod, prefix)
+                    curr = _slice_param(p)
+                    ref = self._freeze_refs.get(tag, None)
+                    if curr is None or ref is None:
+                        print(f"[Freeze check] {tag}: could not find a param with prefix '{prefix}'")
+                        continue
+                    diff = _max_abs_diff(curr, ref)
+                    print(f"[Freeze check] {tag}: max |Δ| = {0.0 if diff is None else diff:.3e}")
 
             for name, param in mod.named_parameters():
                 if name.endswith(".alpha"):
@@ -1104,6 +1152,13 @@ def print_model_summary(model: torch.nn.Module, log_dir: str = ""):
         f"\tNon-Trainable parameters {get_human_readable_count(non_trainable_parameters)}"
     )
     logging.info("==" * 10)
+
+    # --- NEW: list trainable params ---
+    logging.info("=== Trainable parameter list ===")
+    for name, p in model.named_parameters():
+        if p.requires_grad:
+            logging.info(f"{name:60s} {tuple(p.shape)}  params={p.numel():,}")
+    logging.info("=== End of trainable parameter list ===")
 
     if log_dir:
         output_fpath = os.path.join(log_dir, "model.txt")

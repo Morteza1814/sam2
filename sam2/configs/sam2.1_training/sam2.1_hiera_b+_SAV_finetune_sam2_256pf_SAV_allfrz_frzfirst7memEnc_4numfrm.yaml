@@ -4,7 +4,7 @@ scratch:
   resolution: 1024
   train_batch_size: 1
   num_train_workers: 10
-  num_frames: 4
+  num_frames: 24
   max_num_objects: 3
   base_lr: 5.0e-6
   vision_lr: 3.0e-06
@@ -15,7 +15,7 @@ dataset:
   # PATHS to Dataset
   img_folder: /bigtemp2/rgq5aw/sav_train/sav_data/sav_train_frames/ # PATH to MOSE JPEGImages folder
   gt_folder: /bigtemp2/rgq5aw/sav_train/sav_data/sav_train/  # PATH to MOSE Annotations folder
-  file_list_txt: null # Optional PATH to filelist containing a subset of videos to be used for training
+  file_list_txt: training/assets/sav_train_list_1_5k.txt # Optional PATH to filelist containing a subset of videos to be used for training
 
   multiplier: 2
 
@@ -148,7 +148,7 @@ trainer:
             use_dwconv: True  # depth-wise convs
           num_layers: 2
 
-    num_maskmem: 256
+    num_maskmem: 23
     image_size: ${scratch.resolution}
     # apply scaled sigmoid on mask logits for memory encoder, and directly feed input mask as output mask
     sigmoid_scale_for_mem_enc: 20.0
