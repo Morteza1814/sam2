@@ -782,6 +782,18 @@ class Trainer:
                     self.scaler.unscale_(self.optim.optimizer)
                     self.gradient_clipper(model=self.model)
 
+                # --- Log unscaled grads here ---
+                if get_rank() == 0 and self.steps[Phase.TRAIN] % 100 == 0:
+                    mod = unwrap_ddp_if_wrapped(self.model)
+                    enc = getattr(mod, "maskmem_tpos_enc", None)
+                    g = None if (enc is None or enc.grad is None) else enc.grad
+                    print("loss scale =", float(self.scaler.get_scale()) if self.optim_conf.amp.enabled else 1.0)
+                    if g is None:
+                        print("maskmem_tpos_enc.grad is None")
+                    else:
+                        print("▶ grad rows 0-6 (UNSCALED):", g[:7].abs().max().item())
+                        print("▶ grad rows 7-end (UNSCALED):", g[7:].abs().max().item())
+
                 if self.gradient_logger is not None:
                     self.gradient_logger(
                         self.model, rank=self.distributed_rank, where=self.where
@@ -891,9 +903,10 @@ class Trainer:
         
         # temporary logs
         if get_rank() == 0 and self.steps[phase] % 100 == 0:   # first backward only
-            enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
-            print("▶ grad rows 0-6:", enc_grad[:7].abs().max().item())
-            print("▶ grad rows 7-end:", enc_grad[7:].abs().max().item())
+            # enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
+            # print("loss scale =", float(self.scaler.get_scale()) if self.optim_conf.amp.enabled else 1.0)
+            # print("▶ grad rows 0-6:", enc_grad[:7].abs().max().item())
+            # print("▶ grad rows 7-end:", enc_grad[7:].abs().max().item())
             
             mod = unwrap_ddp_if_wrapped(self.model)   # or:  mod = model.module if hasattr(model, "module") else model
         # --- helpers ---

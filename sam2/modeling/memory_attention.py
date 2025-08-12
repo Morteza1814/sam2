@@ -135,10 +135,11 @@ class DualMemoryAttentionLayer(MemoryAttentionLayer):
         # print("smem", s_mem.shape, ", num short past frames: ",  s_mem.shape[seq_dim] // 4096, ", s_pos_", s_pos_.shape)
         tgt_s = self._forward_ca(tgt, s_mem, query_pos, s_pos_, num_k_exclude_rope)
         if l_bank.shape[seq_dim] > 0:
-            # l_mem  = torch.cat([l_bank, p_bank], dim=seq_dim)
-            # l_pos_ = torch.cat([l_pos , p_pos ], dim=seq_dim) if l_pos is not None else None
+            l_mem  = torch.cat([l_bank, p_bank], dim=seq_dim)
+            l_pos_ = torch.cat([l_pos , p_pos ], dim=seq_dim) if l_pos is not None else None
+            tgt_l = self._forward_ca(tgt, l_mem, query_pos, l_pos_, num_k_exclude_rope)
             # print("l_bank.shape[seq_dim]: ", l_bank.shape[seq_dim], ", num long past frames: ", l_bank.shape[seq_dim] // 4096, ", l_pos.shape: ", l_pos.shape)
-            tgt_l = self._forward_ca(tgt, l_bank, query_pos, l_pos, 0)
+            # tgt_l = self._forward_ca(tgt, l_bank, query_pos, l_pos, 0)
 
             tgt = tgt_s + torch.tanh(self.alpha) * tgt_l
         else:

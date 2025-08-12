@@ -103,24 +103,59 @@ class SAM2Train(SAM2Base):
         # A random number generator with a fixed initial seed across GPUs
         self.rng = np.random.default_rng(seed=42)
 
-        if freeze_image_encoder:
-            for p in self.image_encoder.parameters():
+        # if freeze_image_encoder:
+        #     for p in self.image_encoder.parameters():
+        #         p.requires_grad = False
+
+        # def _freeze(module):
+        #     for p in module.parameters():
+        #         p.requires_grad = False
+
+        # if freeze_memory_encoder and self.memory_encoder is not None:
+        #     _freeze(self.memory_encoder)
+        # if freeze_memory_attention and self.memory_attention is not None:
+        #     _freeze(self.memory_attention)
+        #     # for n, p in self.memory_attention.named_parameters():
+        #     #     if n.endswith(".alpha"):          # or `n == "alpha"` if your names are flat
+        #     #         p.requires_grad = True
+        # if freeze_decoder and hasattr(self, "sam_mask_decoder"):
+        #     _freeze(self.sam_mask_decoder)
+        # def _freeze(m):
+        #     if m is None: return
+        #     for p in m.parameters():
+        #         p.requires_grad = False
+
+        # if freeze_image_encoder:      _freeze(self.image_encoder)
+        # if freeze_memory_encoder:     _freeze(self.memory_encoder)
+        # if freeze_memory_attention:   _freeze(self.memory_attention)
+        # if hasattr(self, "sam_mask_decoder") and freeze_decoder:
+        #     _freeze(self.sam_mask_decoder)
+        # # also freeze modules/params not covered by the above:
+        # _freeze(getattr(self, "sam_prompt_encoder", None))
+        # _freeze(getattr(self, "obj_ptr_proj", None))
+        # _freeze(getattr(self, "obj_ptr_tpos_proj", None))
+
+        # # finally, re-enable only the two you want:
+        # for n, p in self.named_parameters():
+        #     if "maskmem_tpos_enc" in n or n.endswith(".alpha") or n == "alpha":
+        #         p.requires_grad = True
+        def freeze_all_but_alpha_and_maskmem(model):
+            # 0) turn off all grads
+            for n, p in model.named_parameters():
                 p.requires_grad = False
 
-        def _freeze(module):
-            for p in module.parameters():
-                p.requires_grad = False
-
-        if freeze_memory_encoder and self.memory_encoder is not None:
-            _freeze(self.memory_encoder)
-        if freeze_memory_attention and self.memory_attention is not None:
-            _freeze(self.memory_attention)
-            for n, p in self.memory_attention.named_parameters():
-                if n.endswith(".alpha"):          # or `n == "alpha"` if your names are flat
+            # 1) turn back on ONLY the allowed params
+            for n, p in model.named_parameters():
+                if "maskmem_tpos_enc" in n:
                     p.requires_grad = True
-        if freeze_decoder and hasattr(self, "sam_mask_decoder"):
-            _freeze(self.sam_mask_decoder)
-        
+                elif n.endswith(".alpha") or n == "alpha":
+                    p.requires_grad = True
+
+            # 2) sanity log
+            keep = [n for n, p in model.named_parameters() if p.requires_grad]
+            import logging; logging.info("Trainables after freeze: %s", keep)
+
+        freeze_all_but_alpha_and_maskmem(self)
         
     def forward(self, input: BatchedVideoDatapoint):
         if self.training or not self.forward_backbone_per_frame_for_eval:

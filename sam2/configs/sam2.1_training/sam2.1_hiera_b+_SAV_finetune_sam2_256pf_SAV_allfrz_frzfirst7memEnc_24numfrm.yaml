@@ -328,7 +328,7 @@ trainer:
 launcher:
   num_nodes: 1
   gpus_per_node: 8
-  experiment_log_dir: /p/lava/morteza/sam2/log/sam2_logs_256pf_SAV_allfrz_frzfirst7memEnc_withalpha_4numfrm/ # Path to log directory, defaults to ./sam2_logs/${config_name}
+  experiment_log_dir: /p/lava/morteza/sam2/log/sam2_logs_256pf_SAV_allfrz_frzfirst7memEnc_withalpha_24numfrm/ # Path to log directory, defaults to ./sam2_logs/${config_name}
 
 # SLURM args if running on a cluster
 submitit:
