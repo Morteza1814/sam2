@@ -666,7 +666,15 @@ class SAM2Base(torch.nn.Module):
 
         # Step 2: Concatenate the memories and forward through the transformer encoder
         memory = torch.cat(to_cat_memory, dim=0)
-        memory_pos_embed = torch.cat(to_cat_memory_pos_embed, dim=0)               
+        memory_pos_embed = torch.cat(to_cat_memory_pos_embed, dim=0) 
+
+        # Each selected conditioning frame contributes H*W tokens at this level.
+        num_cond_frames = len(selected_cond_outputs)  # already defined earlier
+        cond_tokens = num_cond_frames * (H * W)
+
+        # Non-conditioned tokens are the rest (before the pointer block)
+        ptr_start = memory.shape[0] - num_obj_ptr_tokens
+        noncond_tokens = max(0, ptr_start - cond_tokens)              
 
         s_bank_len = sum(m.shape[0] for m in to_cat_memory) - num_obj_ptr_tokens
 
@@ -679,8 +687,29 @@ class SAM2Base(torch.nn.Module):
             memory=memory,
             memory_pos=memory_pos_embed,
             num_obj_ptr_tokens=num_obj_ptr_tokens,
-            s_bank_len=s_bank_len,     
+            s_bank_len=s_bank_len,    
+            cond_tokens=cond_tokens,
+            noncond_tokens=noncond_tokens, 
         )
+
+        # Debug: count token categories before building memory attention
+        # total_cond_tokens = sum(
+        #     m.shape[0] for idx, m in enumerate(to_cat_memory)
+        #     if idx < len(output_dict["cond_frame_outputs"])  # crude index-based check
+        # )
+        # total_noncond_tokens = sum(
+        #     m.shape[0] for idx, m in enumerate(to_cat_memory)
+        #     if idx >= len(output_dict["cond_frame_outputs"]) and idx < len(to_cat_memory) - (1 if num_obj_ptr_tokens > 0 else 0)
+        # )
+        # pointer_tokens = num_obj_ptr_tokens
+        # print(
+        #     "[DEBUG memory build]",
+        #     "cond_tokens=", total_cond_tokens,
+        #     "noncond_tokens=", total_noncond_tokens,
+        #     "pointer_tokens=", pointer_tokens,
+        #     "s_bank_len=", s_bank_len
+        # )
+
 
         # reshape the output (HW)BC => BCHW
         pix_feat_with_mem = pix_feat_with_mem.permute(1, 2, 0).view(B, C, H, W)

@@ -105,45 +105,75 @@ class DualMemoryAttentionLayer(MemoryAttentionLayer):
 
     def forward(self, tgt, memory, pos=None, query_pos=None,
                 s_bank_len: int = 0,          #  NEW
-                num_k_exclude_rope: int = 0):
+                num_k_exclude_rope: int = 0,
+                cond_tokens: int = 0,
+                noncond_tokens: int = 0):
 
         # 1) Self-attention (unchanged)
         tgt = self._forward_sa(tgt, query_pos)
 
         seq_dim = 1 # if self.batch_first else 0
+        total_len = memory.shape[seq_dim]
+        ptr_start = total_len - num_k_exclude_rope     
+        noncond_start = cond_tokens 
+        assert noncond_start + noncond_tokens == ptr_start, "counts mismatch"
 
-        ptr_start = memory.shape[seq_dim] - num_k_exclude_rope
-        # print("sbank_len: ", s_bank_len, "ptr_start: ", ptr_start, "num_k_exclude_rop: ", num_k_exclude_rope)
-        # ------- correct slicing ----------
-        if seq_dim: #self.batch_first:                       # memory: (B , Seq , C)
-            s_bank = memory[:, :s_bank_len, :]
-            l_bank = memory[:, s_bank_len:ptr_start, :]
+        # --- compute how many non-cond tokens to include in S ---
+        k_nc = max(0, min(noncond_tokens, s_bank_len - cond_tokens))
+
+        if seq_dim:
+            # S = [all cond] + [last k_nc of non-cond]
+            s_bank_left  = memory[:, :cond_tokens, :]
+            s_bank_right = memory[:, ptr_start - k_nc:ptr_start, :] if k_nc > 0 else memory[:, :0, :]
+            s_bank = torch.cat([s_bank_left, s_bank_right], dim=seq_dim)
+
+            # L = remaining non-cond (the far part we didn't include)
+            l_bank = memory[:, noncond_start: ptr_start - k_nc, :] if (noncond_tokens - k_nc) > 0 else memory[:, :0, :]
+
+            # Pointers
             p_bank = memory[:, ptr_start:, :]
-            s_pos  = pos[:, :s_bank_len, :]  if pos is not None else None
-            l_pos  = pos[:, s_bank_len:ptr_start, :] if pos is not None else None
-            p_pos  = pos[:, ptr_start:, :]   if pos is not None else None
-        else:                                      # memory: (Seq , B , C)
-            s_bank = memory[:s_bank_len]
-            l_bank = memory[s_bank_len:ptr_start]
-            p_bank = memory[ptr_start:]
-            s_pos  = pos[:s_bank_len]  if pos is not None else None
-            l_pos  = pos[s_bank_len:ptr_start] if pos is not None else None
-            p_pos  = pos[ptr_start:]   if pos is not None else None
 
+            # Positional encodings match the same slices
+            s_pos_left  = pos[:, :cond_tokens, :] if pos is not None else None
+            s_pos_right = (pos[:, ptr_start - k_nc:ptr_start, :] if (pos is not None and k_nc > 0) else None)
+            s_pos = None if pos is None else (s_pos_left if k_nc == 0 else torch.cat([s_pos_left, s_pos_right], dim=seq_dim))
+
+            l_pos = (pos[:, noncond_start: ptr_start - k_nc, :] if (pos is not None and (noncond_tokens - k_nc) > 0) else None)
+            p_pos = pos[:, ptr_start:, :] if pos is not None else None
+        else:
+            raise NotImplementedError("seq_dim==0 path not used with batch_first=True")
+
+        # --- build final K/V for S and optional L (always append pointers) ---
         s_mem  = torch.cat([s_bank, p_bank], dim=seq_dim)
-        s_pos_ = torch.cat([s_pos , p_pos ], dim=seq_dim) if s_pos is not None else None
-        # print("smem", s_mem.shape, ", num short past frames: ",  s_mem.shape[seq_dim] // 4096, ", s_pos_", s_pos_.shape)
+        s_pos_ = None if s_pos is None else torch.cat([s_pos, p_pos], dim=seq_dim)
+
+        # 2) α==0 → ONLY short bank (match the 7-frame baseline behavior)
+        # if torch.allclose(torch.tanh(self.alpha.detach()), torch.zeros((), device=self.alpha.device)):
+        #     tgt_s = self._forward_ca(tgt, s_mem, query_pos, s_pos_, num_k_exclude_rope)
+        #     tgt2 = self.norm3(tgt_s)
+        #     tgt2 = self.linear2(self.dropout(self.activation(self.linear1(tgt2))))
+        #     return tgt_s + self.dropout3(tgt2)
+
+        # 3) Otherwise, compute both branches and blend
         tgt_s = self._forward_ca(tgt, s_mem, query_pos, s_pos_, num_k_exclude_rope)
         if l_bank.shape[seq_dim] > 0:
             l_mem  = torch.cat([l_bank, p_bank], dim=seq_dim)
-            l_pos_ = torch.cat([l_pos , p_pos ], dim=seq_dim) if l_pos is not None else None
-            tgt_l = self._forward_ca(tgt, l_mem, query_pos, l_pos_, num_k_exclude_rope)
-            # print("l_bank.shape[seq_dim]: ", l_bank.shape[seq_dim], ", num long past frames: ", l_bank.shape[seq_dim] // 4096, ", l_pos.shape: ", l_pos.shape)
-            # tgt_l = self._forward_ca(tgt, l_bank, query_pos, l_pos, 0)
-
-            tgt = tgt_s + torch.tanh(self.alpha) * tgt_l
+            l_pos_ = None if l_pos is None else torch.cat([l_pos, p_pos], dim=seq_dim)
+            tgt_l  = self._forward_ca(tgt, l_mem, query_pos, l_pos_, num_k_exclude_rope)
+            tgt    = tgt_s + torch.tanh(self.alpha) * tgt_l
         else:
-            tgt = tgt_s
+            tgt    = tgt_s
+    
+        assert p_bank.shape[seq_dim] == num_k_exclude_rope
+        assert s_bank.shape[seq_dim] == min(s_bank_len, cond_tokens + noncond_tokens)
+        # print("ptr_start=", ptr_start,
+        #     " | len(memory)=", total_len,
+        #     " | S=", s_bank.shape[seq_dim],
+        #     " (cond=", cond_tokens, ", k_nc=", k_nc, ")",
+        #     " | L=", l_bank.shape[seq_dim],
+        #     " | P=", p_bank.shape[seq_dim],
+        #     " | tanh(alpha)=", float(torch.tanh(self.alpha)))
+
         # 4) Feed-forward
         tgt2 = self.norm3(tgt)
         tgt2 = self.linear2(self.dropout(self.activation(self.linear1(tgt2))))
@@ -174,7 +204,9 @@ class MemoryAttention(nn.Module):
         curr_pos: Optional[Tensor] = None,  # pos_enc for self-attention inputs
         memory_pos: Optional[Tensor] = None,  # pos_enc for cross-attention inputs
         num_obj_ptr_tokens: int = 0,  # number of object pointer *tokens*
-        s_bank_len: int = 0,          # ← NEW
+        s_bank_len: int = 0,        
+        cond_tokens: int = 0,
+        noncond_tokens: int = 0,
     ):
         if isinstance(curr, list):
             assert isinstance(curr_pos, list)
@@ -204,6 +236,8 @@ class MemoryAttention(nn.Module):
             if isinstance(layer.cross_attn_image, RoPEAttention):
                 kwds = {"num_k_exclude_rope": num_obj_ptr_tokens}
             kwds["s_bank_len"] = s_bank_len
+            kwds["cond_tokens"] = cond_tokens
+            kwds["noncond_tokens"] = noncond_tokens
             output = layer(
                 tgt=output,
                 memory=memory,
