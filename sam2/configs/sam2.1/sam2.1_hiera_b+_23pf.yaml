@@ -28,7 +28,7 @@ model:
     d_model: 256
     pos_enc_at_input: true
     layer:
-      _target_: sam2.modeling.memory_attention.DualMemoryAttentionLayer
+      _target_: sam2.modeling.memory_attention.MemoryAttentionLayer
       init_alpha: 0.0  
       activation: relu
       dim_feedforward: 2048

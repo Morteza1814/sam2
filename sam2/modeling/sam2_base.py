@@ -93,9 +93,10 @@ class SAM2Base(torch.nn.Module):
         # extra arguments used to construct the SAM mask decoder; if not None, it should be a dict of kwargs to be passed into `MaskDecoder` class.
         sam_mask_decoder_extra_args=None,
         compile_image_encoder: bool = False,
+        use_dual_memory: bool = False
     ):
         super().__init__()
-
+        self.use_dual_memory = use_dual_memory   
         # Part 1: the image backbone
         self.image_encoder = image_encoder
         # Use level 0, 1, 2 for high-res setting, or just level 2 for the default setting
@@ -585,6 +586,23 @@ class SAM2Base(torch.nn.Module):
                 maskmem_enc = (
                     maskmem_enc + self.maskmem_tpos_enc[self.num_maskmem - t_pos - 1]
                 )
+                # Replace the temporal PE add with a remap for the last 7 frames
+                # if t_pos == 0:
+                #     idx = 0                      # keep cond frames in a dedicated slot if baseline used this (optional)
+                # else:
+                #     # 'rank' among non-conditioning recency: 1 = nearest, 2 = second-nearest, ...
+                #     rank = t_pos                 # because you constructed t_pos=1..num_maskmem-1, nearest has largest (careful)
+                #     # If your "nearest" non-cond corresponds to t_pos = num_maskmem - 1,
+                #     # compute how many frames before current it is:
+                #     dist = self.num_maskmem - t_pos  # 1=nearest, 2, 3, ...
+
+                #     if dist <= S_BANK_FRAMES:
+                #         # Map to the 7-frame baseline slots: 0..6 or 6..0 depending on how your baseline was trained
+                #         idx = (S_BANK_FRAMES - dist)  # e.g., dist=1 → idx=6 (nearest), dist=7 → idx=0 (farthest in short)
+                #     else:
+                #         # Long bank keeps the "23-slot" mapping
+                #         idx = self.num_maskmem - t_pos - 1
+                #     maskmem_enc = maskmem_enc + self.maskmem_tpos_enc[idx]
                 to_cat_memory_pos_embed.append(maskmem_enc)
 
             # Construct the list of past object pointers
@@ -665,52 +683,69 @@ class SAM2Base(torch.nn.Module):
             to_cat_memory_pos_embed = [self.no_mem_pos_enc.expand(1, B, self.mem_dim)]
 
         # Step 2: Concatenate the memories and forward through the transformer encoder
-        memory = torch.cat(to_cat_memory, dim=0)
-        memory_pos_embed = torch.cat(to_cat_memory_pos_embed, dim=0) 
+        # Flatten the pieces we constructed above (to_cat_memory/_pos_embed are [seq, B, C] chunks)
+        memory      = torch.cat(to_cat_memory, dim=0)            # [T_all, B, C]
+        memory_pos  = torch.cat(to_cat_memory_pos_embed, dim=0)  # [T_all, B, C]
+        if self.use_dual_memory:
+            # Token accounting
+            # Each cond frame contributes (H*W) tokens at this level
+            num_cond_frames = len(selected_cond_outputs)  # we defined this above
+            cond_tokens     = num_cond_frames * (H * W)
 
-        # Each selected conditioning frame contributes H*W tokens at this level.
-        num_cond_frames = len(selected_cond_outputs)  # already defined earlier
-        cond_tokens = num_cond_frames * (H * W)
+            # Pointer block is always the LAST block
+            ptr_start       = memory.shape[0] - num_obj_ptr_tokens
+            noncond_tokens  = max(0, ptr_start - cond_tokens)
 
-        # Non-conditioned tokens are the rest (before the pointer block)
-        ptr_start = memory.shape[0] - num_obj_ptr_tokens
-        noncond_tokens = max(0, ptr_start - cond_tokens)              
+            # Short-bank capacity: 7 frames total (cond + noncond)
+            S_BANK_FRAMES   = 7
+            max_short_tokens = S_BANK_FRAMES * (H * W)
 
-        s_bank_len = sum(m.shape[0] for m in to_cat_memory) - num_obj_ptr_tokens
+            # How many non-cond tokens can we still fit in S after placing cond?
+            k_nc = max(0, min(noncond_tokens, max_short_tokens - cond_tokens))
 
-        if s_bank_len > (S_BANK_FRAMES * H * W):
-            s_bank_len = S_BANK_FRAMES * H * W        
+            # S slices:
+            #  S_left  = all cond tokens (front)
+            #  S_right = the MOST RECENT k_nc tokens from the non-cond block (end of non-cond, just before pointers)
+            S_left_mem  = memory[:cond_tokens, :]                                      # [cond_tokens, B, C]
+            S_left_pos  = memory_pos[:cond_tokens, :]                                  # [cond_tokens, B, C]
+            S_right_mem = memory[ptr_start - k_nc:ptr_start, :] if k_nc > 0 else memory[:0, :]
+            S_right_pos = memory_pos[ptr_start - k_nc:ptr_start, :] if k_nc > 0 else memory_pos[:0, :]
 
-        pix_feat_with_mem = self.memory_attention(
-            curr=current_vision_feats,
-            curr_pos=current_vision_pos_embeds,
-            memory=memory,
-            memory_pos=memory_pos_embed,
-            num_obj_ptr_tokens=num_obj_ptr_tokens,
-            s_bank_len=s_bank_len,    
-            cond_tokens=cond_tokens,
-            noncond_tokens=noncond_tokens, 
-        )
+            # L slices (older non-cond that didn't fit into S). For now we'll discard them.
+            L_mem = memory[cond_tokens: ptr_start - k_nc, :] if (noncond_tokens - k_nc) > 0 else memory[:0, :]
+            L_pos = memory_pos[cond_tokens: ptr_start - k_nc, :] if (noncond_tokens - k_nc) > 0 else memory_pos[:0, :]
 
-        # Debug: count token categories before building memory attention
-        # total_cond_tokens = sum(
-        #     m.shape[0] for idx, m in enumerate(to_cat_memory)
-        #     if idx < len(output_dict["cond_frame_outputs"])  # crude index-based check
-        # )
-        # total_noncond_tokens = sum(
-        #     m.shape[0] for idx, m in enumerate(to_cat_memory)
-        #     if idx >= len(output_dict["cond_frame_outputs"]) and idx < len(to_cat_memory) - (1 if num_obj_ptr_tokens > 0 else 0)
-        # )
-        # pointer_tokens = num_obj_ptr_tokens
-        # print(
-        #     "[DEBUG memory build]",
-        #     "cond_tokens=", total_cond_tokens,
-        #     "noncond_tokens=", total_noncond_tokens,
-        #     "pointer_tokens=", pointer_tokens,
-        #     "s_bank_len=", s_bank_len
-        # )
+            # Pointer slice (always last)
+            P_mem = memory[ptr_start:, :]                               # [num_obj_ptr_tokens, B, C]
+            P_pos = memory_pos[ptr_start:, :]
 
+            # Final S bank = S_left + S_right (+ pointers appended at the end so num_k_exclude_rope works)
+            S_mem = torch.cat([S_left_mem, S_right_mem, P_mem], dim=0)
+            S_pos = torch.cat([S_left_pos, S_right_pos, P_pos], dim=0)
 
+            L_mem = torch.cat([L_mem, P_mem], dim=0)   # append pointers to L too
+            L_pos = torch.cat([L_pos, P_pos], dim=0)
+
+            # Call the dual-bank memory attention
+            pix_feat_with_mem = self.memory_attention(
+                curr=current_vision_feats,                # list or tensor per your model
+                curr_pos=current_vision_pos_embeds,
+                s_memory=S_mem,                           # [T_s, B, C] (includes pointers at end)
+                s_pos=S_pos,                              # [T_s, B, C]
+                l_memory=L_mem,                            # None = discard long bank for now
+                l_pos=L_pos,                               # None = discard long bank for now
+                num_obj_ptr_tokens=num_obj_ptr_tokens,        # count applies to S (since we appended pointers)
+            )
+        else:
+            pix_feat_with_mem = self.memory_attention(
+                curr=current_vision_feats,                # list or tensor per your model
+                curr_pos=current_vision_pos_embeds,
+                s_memory=memory,                           # [T_s, B, C] (includes pointers at end)
+                s_pos=memory_pos,                              # [T_s, B, C]
+                l_memory=None,                            # None = discard long bank for now
+                l_pos=None,                               # None = discard long bank for now
+                num_obj_ptr_tokens=num_obj_ptr_tokens,        # count applies to S (since we appended pointers)
+            )
         # reshape the output (HW)BC => BCHW
         pix_feat_with_mem = pix_feat_with_mem.permute(1, 2, 0).view(B, C, H, W)
         return pix_feat_with_mem

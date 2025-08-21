@@ -10,6 +10,8 @@ import logging
 import math
 import os
 import time
+import hashlib
+
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping, Optional
@@ -56,7 +58,6 @@ from training.utils.train_utils import (
 from training.utils.freeze_utils import freeze_first_memory_tokens 
 
 CORE_LOSS_KEY = "core_loss"
-
 
 def unwrap_ddp_if_wrapped(model):
     if isinstance(model, torch.nn.parallel.DistributedDataParallel):
@@ -137,7 +138,6 @@ class LoggingConf:
     log_visual_frequency: int = 100
     scalar_keys_to_log: Optional[Dict[str, Any]] = None
     log_batch_stats: bool = False
-
 
 class Trainer:
     """
@@ -228,6 +228,40 @@ class Trainer:
         self.load_checkpoint()
         self._setup_ddp_distributed_training(distributed, accelerator)
         barrier()
+
+    # morteza: start (printinh maskmem_tpos_enc rows to make sure they are not changing)
+    # @torch.no_grad()
+    # def _print_short_pe(self, tag: str, n: int = 7, name: str = "maskmem_tpos_enc"):
+    #     if get_rank() != 0:   # only rank 0 prints
+    #         return
+    #     mod = unwrap_ddp_if_wrapped(self.model)
+    #     pe = getattr(mod, name, None)
+    #     if pe is None:
+    #         print(f"[{tag}] {name} not found.")
+    #         return
+    #     rows = pe[:n].detach().flatten(1)  # (n, D)
+    #     print(f"[{tag}] {name} first {n} rows  shape={tuple(pe.shape)}")
+    #     for i in range(min(n, rows.shape[0])):
+    #         head = rows[i, :8].cpu().tolist()
+    #         print(f"  row[{i}] head8={head}  mean={rows[i].mean().item():.6f}  std={rows[i].std().item():.6f}")
+
+    @torch.no_grad()
+    def _snapshot_short_pe(self, n: int = 7, name: str = "maskmem_tpos_enc"):
+        mod = unwrap_ddp_if_wrapped(self.model)
+        pe = getattr(mod, name, None)
+        return None if pe is None else pe[:n].detach().clone()
+
+    def _ensure_tpos_snapshot(self, n_keep: int = 7):
+        # create the reference snapshot once, *after* weights are loaded
+        if hasattr(self, "_tpos_ref"):
+            return
+        mod = unwrap_ddp_if_wrapped(self.model)
+        if not hasattr(mod, "maskmem_tpos_enc"):
+            return
+        with torch.no_grad():
+            self._tpos_ref = mod.maskmem_tpos_enc[:n_keep].detach().clone()
+        import logging; logging.info(f"[hard-freeze] Snapshotted first {n_keep} rows of maskmem_tpos_enc")
+    # morteza: end (printinh maskmem_tpos_enc rows to make sure they are not changing)
 
     def _setup_timers(self):
         """
@@ -419,6 +453,10 @@ class Trainer:
                 f"Loading pretrained checkpoint from {self.checkpoint_conf.model_weight_initializer}"
             )
             self.model = model_weight_initializer(model=self.model)
+        # morteza: start (printinh maskmem_tpos_enc rows to make sure they are not changing)
+        # self._print_short_pe(n=15, tag="INIT-LOADED")           # print immediately after load
+        self._short_pe_ref = self._snapshot_short_pe() 
+        # morteza: end (printinh maskmem_tpos_enc rows to make sure they are not changing)
 
     def _load_resuming_checkpoint(self, ckpt_path: str):
         logging.info(f"Resuming training from {ckpt_path}")
@@ -526,7 +564,9 @@ class Trainer:
             self.train_dataset = instantiate(self.data_conf.train)
 
     def run_train(self):
-
+        # morteza: start (printinh maskmem_tpos_enc rows to make sure they are not changing)
+        self._ensure_tpos_snapshot(n_keep=7)
+        # morteza: end (printinh maskmem_tpos_enc rows to make sure they are not changing)
         while self.epoch < self.max_epochs:
             dataloader = self.train_dataset.get_loader(epoch=int(self.epoch))
             barrier()
@@ -792,7 +832,8 @@ class Trainer:
                         print("maskmem_tpos_enc.grad is None")
                     else:
                         print("▶ grad rows 0-6 (UNSCALED):", g[:7].abs().max().item())
-                        print("▶ grad rows 7-end (UNSCALED):", g[7:].abs().max().item())
+                        if g.shape[0] > 7:
+                            print("▶ grad rows 7-end (UNSCALED):", g[7:].abs().max().item())
 
                 if self.gradient_logger is not None:
                     self.gradient_logger(
@@ -803,6 +844,40 @@ class Trainer:
                 # applied if the gradients are infinite
                 self.scaler.step(self.optim.optimizer)
                 self.scaler.update()
+                
+                # morteza: start (restore first 7 rows so optimizer (e.g., AdamW decay) can't drift them)
+                mod = unwrap_ddp_if_wrapped(self.model)
+                if hasattr(self, "_tpos_ref") and hasattr(mod, "maskmem_tpos_enc"):
+                    with torch.no_grad():
+                        mod.maskmem_tpos_enc[: self._tpos_ref.shape[0]].copy_(self._tpos_ref)
+                # morteza: end (restore first 7 rows so optimizer (e.g., AdamW decay) can't drift them)
+
+                # --- Every 10 steps: print short PE and max drift vs the loaded snapshot ---
+                if get_rank() == 0 and (self.steps[Phase.TRAIN] % 100 == 0):
+                    # morteza: start (printinh maskmem_tpos_enc rows to make sure they are not changing)
+                    # self._print_short_pe(n=15, tag=f"TRAIN-step{self.steps[Phase.TRAIN]}")
+                    # morteza: end (printinh maskmem_tpos_enc rows to make sure they are not changing)
+
+                    if getattr(self, "_short_pe_ref", None) is not None:
+                        curr = self._snapshot_short_pe()
+                        if curr is not None:
+                            diff = (curr - self._short_pe_ref).abs().max().item()
+                            print(f"[TRAIN-step{self.steps[Phase.TRAIN]}] Δ first-7 rows vs load = {diff:.8e}")
+                    # after load, and again right before eval
+                    # morteza: start (get the hash of all weights to see if they are changing)
+                    # def sha_of_params(module: nn.Module):
+                    #     h = hashlib.sha256()
+                    #     for n,p in module.state_dict().items():
+                    #         # skip FP16 scaler buffers etc., include only model weights
+                    #         # if p.requires_grad is not None:  # just to touch all real params
+                    #         h.update(p.detach().cpu().numpy().tobytes())
+                    #         if 'running' in n:
+                    #             print('*'*30, n, p)
+                    #     return h.hexdigest()
+                    
+                    # mod = unwrap_ddp_if_wrapped(self.model)
+                    # print("[DEBUG] param sha256 =", sha_of_params(mod))
+                    # morteza: end (get the hash of all weights to see if they are changing)
 
                 # measure elapsed time
                 batch_time_meter.update(time.time() - end)
@@ -900,16 +975,23 @@ class Trainer:
                     extra_loss_key, self.device, ":.2e"
                 )
             extra_loss_mts[extra_loss_key].update(extra_loss.item(), batch_size)
-        
+            
+      
         # temporary logs
-        if get_rank() == 0 and self.steps[phase] % 100 == 0:   # first backward only
+        # morteza: start (printinh maskmem_tpos_enc rows to make sure they are not changing
+        if get_rank() == 0 and self.steps[phase] % 100 == 0:   
             # enc_grad = unwrap_ddp_if_wrapped(self.model).maskmem_tpos_enc.grad
             # print("loss scale =", float(self.scaler.get_scale()) if self.optim_conf.amp.enabled else 1.0)
             # print("▶ grad rows 0-6:", enc_grad[:7].abs().max().item())
             # print("▶ grad rows 7-end:", enc_grad[7:].abs().max().item())
-            
             mod = unwrap_ddp_if_wrapped(self.model)   # or:  mod = model.module if hasattr(model, "module") else model
-        # --- helpers ---
+            if hasattr(self, "_tpos_ref") and hasattr(mod, "maskmem_tpos_enc"):
+                drift = (mod.maskmem_tpos_enc[: self._tpos_ref.shape[0]] - self._tpos_ref).abs().max().item()
+                print(f"[hard-freeze] max |Δ| first 7 rows = {drift:.3e}")
+        # morteza: end (printinh maskmem_tpos_enc rows to make sure they are not changing
+
+
+        # morteza: start (printing model parameters to check if they are frozen)
             def _first_param_by_prefix(module, prefix: str):
                 for n, p in module.named_parameters():
                     if n.startswith(prefix):
@@ -964,19 +1046,7 @@ class Trainer:
                         f"{name:40s} = {val:+.6f}  tanh() = {math.tanh(val):+.6f}  "
                         f"requires_grad={param.requires_grad}"
                     )      
-
-        # if self.steps[phase] % 100 == 0:          
-        #     # unwrap DDP to access the real module
-        #     param_dict = dict(
-        #         unwrap_ddp_if_wrapped(self.model).named_parameters()
-        #     )
-        #     for n, ref in self._frozen_snapshot.items():
-        #         curr = param_dict[n].detach()
-        #         if ref.device != curr.device:
-        #             ref = ref.to(curr.device, non_blocking=True)    
-        #         if not torch.equal(curr, ref):
-        #             # raise RuntimeError(f"🚨  Parameter '{n}' changed although it is frozen.")
-        #             logging.warning(f"[Freeze-leak] {n} moved by {(curr-ref).abs().max():.4e}")
+            # morteza: end (printing model parameters to check if they are frozen)
 
     def _log_meters_and_save_best_ckpts(self, phases: List[str]):
         logging.info("Synchronizing meters")

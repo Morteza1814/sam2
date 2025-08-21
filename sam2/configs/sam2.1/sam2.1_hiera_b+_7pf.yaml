@@ -29,6 +29,7 @@ model:
     pos_enc_at_input: true
     layer:
       _target_: sam2.modeling.memory_attention.MemoryAttentionLayer
+      init_alpha: 0.0  
       activation: relu
       dim_feedforward: 2048
       dropout: 0.1
