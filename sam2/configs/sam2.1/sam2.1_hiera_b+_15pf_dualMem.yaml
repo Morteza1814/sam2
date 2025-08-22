@@ -3,6 +3,7 @@
 # Model
 model:
   _target_: sam2.modeling.sam2_base.SAM2Base
+  use_dual_memory: true
   image_encoder:
     _target_: sam2.modeling.backbones.image_encoder.ImageEncoder
     scalp: 1
@@ -29,6 +30,7 @@ model:
     pos_enc_at_input: true
     layer:
       _target_: sam2.modeling.memory_attention.MemoryAttentionLayer
+      init_alpha: 1.0  
       activation: relu
       dim_feedforward: 2048
       dropout: 0.1
@@ -81,7 +83,7 @@ model:
           use_dwconv: True  # depth-wise convs
         num_layers: 2
 
-  num_maskmem: 64
+  num_maskmem: 15
   image_size: 1024
   # apply scaled sigmoid on mask logits for memory encoder, and directly feed input mask as output mask
   sigmoid_scale_for_mem_enc: 20.0

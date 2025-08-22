@@ -69,6 +69,7 @@ class SAM2Train(SAM2Base):
         freeze_memory_encoder=True,
         freeze_memory_attention=True,
         freeze_decoder=True,
+        freeze_alpha=False,
         **kwargs,
     ):
         super().__init__(image_encoder, memory_attention, memory_encoder, **kwargs)
@@ -148,7 +149,7 @@ class SAM2Train(SAM2Base):
             for n, p in model.named_parameters():
                 if "maskmem_tpos_enc" in n:
                     p.requires_grad = True
-                elif n.endswith(".alpha") or n == "alpha":
+                elif (n.endswith(".alpha") or n == "alpha") and not freeze_alpha:
                     p.requires_grad = True
 
             # 2) sanity log
