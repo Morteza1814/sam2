@@ -165,8 +165,10 @@ class Trainer:
         optim_overrides: Optional[List[Dict[str, Any]]] = None,
         meters: Optional[Dict[str, Any]] = None,
         loss: Optional[Dict[str, Any]] = None,
+        train7pf: bool = False,
     ):
-
+    
+        self.train7pf = train7pf
         self._setup_env_variables(env_variables)
         self._setup_timers()
 
@@ -846,10 +848,11 @@ class Trainer:
                 self.scaler.update()
                 
                 # morteza: start (restore first 7 rows so optimizer (e.g., AdamW decay) can't drift them)
-                mod = unwrap_ddp_if_wrapped(self.model)
-                if hasattr(self, "_tpos_ref") and hasattr(mod, "maskmem_tpos_enc"):
-                    with torch.no_grad():
-                        mod.maskmem_tpos_enc[: self._tpos_ref.shape[0]].copy_(self._tpos_ref)
+                if not self.train7pf:
+                    mod = unwrap_ddp_if_wrapped(self.model)
+                    if hasattr(self, "_tpos_ref") and hasattr(mod, "maskmem_tpos_enc"):
+                        with torch.no_grad():
+                            mod.maskmem_tpos_enc[: self._tpos_ref.shape[0]].copy_(self._tpos_ref)
                 # morteza: end (restore first 7 rows so optimizer (e.g., AdamW decay) can't drift them)
 
                 # --- Every 10 steps: print short PE and max drift vs the loaded snapshot ---
@@ -1153,7 +1156,8 @@ class Trainer:
         self.logger = Logger(self.logging_conf)
 
         self.model = instantiate(self.model_conf, _convert_="all")
-        freeze_first_memory_tokens(self.model, n_tokens=7)
+        if not self.train7pf:
+            freeze_first_memory_tokens(self.model, n_tokens=7)
         print_model_summary(self.model)
 
         # Snapshot all tensors that are supposed to stay frozen

@@ -2,7 +2,7 @@
 
 #SBATCH --partition=gpu
 #SBATCH --gpus=1
-#SBATCH --constraint="h100_94gb|a100_80gb|a40"
+#SBATCH --constraint="h100_94gb|a100_80gb|a40|a100_40gb"
 #SBATCH --mem=100000
 #SBATCH --time=20:00:00
 #SBATCH --output=%x.txt        # expands to job name

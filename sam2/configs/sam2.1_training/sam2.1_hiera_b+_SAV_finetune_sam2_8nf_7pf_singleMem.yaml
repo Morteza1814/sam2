@@ -9,13 +9,13 @@ scratch:
   base_lr: 5.0e-6
   vision_lr: 3.0e-06
   phases_per_epoch: 1
-  num_epochs: 4
+  num_epochs: 10
 
 dataset:
   # PATHS to Dataset
   img_folder: /bigtemp2/rgq5aw/sav_train/sav_data/sav_train_frames/ # PATH to MOSE JPEGImages folder
   gt_folder: /bigtemp2/rgq5aw/sav_train/sav_data/sav_train/  # PATH to MOSE Annotations folder
-  file_list_txt: training/assets/sav_train_list_1_1k.txt # Optional PATH to filelist containing a subset of videos to be used for training
+  file_list_txt: training/assets/sav_train_list_1_5k.txt # Optional PATH to filelist containing a subset of videos to be used for training
 
   multiplier: 2
 
@@ -57,6 +57,7 @@ vos:
 
 trainer:
   _target_: training.trainer.Trainer
+  train7pf: True
   mode: train_only
   max_epochs: ${times:${scratch.num_epochs},${scratch.phases_per_epoch}}
   accelerator: cuda
@@ -330,7 +331,7 @@ trainer:
 launcher:
   num_nodes: 1
   gpus_per_node: 8
-  experiment_log_dir: /p/lava/morteza/sam2/log/sam2_train_8nf_7pf_1ksav_singleMem/ 
+  experiment_log_dir: /p/lava/morteza/sam2/log/sam2_train_8nf_7pf_5ksav_singleMem/ 
 
 # SLURM args if running on a cluster
 submitit:

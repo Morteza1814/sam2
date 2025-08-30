@@ -15,7 +15,7 @@ dataset:
   # PATHS to Dataset
   img_folder: /bigtemp2/rgq5aw/sav_train/sav_data/sav_train_frames/ # PATH to MOSE JPEGImages folder
   gt_folder: /bigtemp2/rgq5aw/sav_train/sav_data/sav_train/  # PATH to MOSE Annotations folder
-  file_list_txt: training/assets/sav_train_list_1_1k.txt # Optional PATH to filelist containing a subset of videos to be used for training
+  file_list_txt: training/assets/sav_train_list_1_5k.txt # Optional PATH to filelist containing a subset of videos to be used for training
 
   multiplier: 2
 
@@ -330,7 +330,7 @@ trainer:
 launcher:
   num_nodes: 1
   gpus_per_node: 8
-  experiment_log_dir: /p/lava/morteza/sam2/log/sam2_train_16nf_15pf_1ksav_dualMem_alpha1/ 
+  experiment_log_dir: /p/lava/morteza/sam2/log/sam2_train_16nf_15pf_5ksav_dualMem_alpha1/ 
 
 # SLURM args if running on a cluster
 submitit:
