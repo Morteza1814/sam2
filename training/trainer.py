@@ -53,6 +53,8 @@ from training.utils.train_utils import (
     setup_distributed_backend,
 )
 
+from training.utils.freeze_utils import freeze_first_memory_tokens
+
 
 CORE_LOSS_KEY = "core_loss"
 
@@ -227,6 +229,17 @@ class Trainer:
         self.load_checkpoint()
         self._setup_ddp_distributed_training(distributed, accelerator)
         barrier()
+
+    def _ensure_tpos_snapshot(self, n_keep: int = 7):
+        # create the reference snapshot once, *after* weights are loaded
+        if hasattr(self, "_tpos_ref"):
+            return
+        mod = unwrap_ddp_if_wrapped(self.model)
+        if not hasattr(mod, "maskmem_tpos_enc"):
+            return
+        with torch.no_grad():
+            self._tpos_ref = mod.maskmem_tpos_enc[:n_keep].detach().clone()
+        import logging; logging.info(f"[hard-freeze] Snapshotted first {n_keep} rows of maskmem_tpos_enc")
 
     def _setup_timers(self):
         """
@@ -525,7 +538,10 @@ class Trainer:
             self.train_dataset = instantiate(self.data_conf.train)
 
     def run_train(self):
-
+        # initial save before starting
+        self.save_checkpoint(self.epoch)
+        self._ensure_tpos_snapshot(n_keep=7)
+        
         while self.epoch < self.max_epochs:
             dataloader = self.train_dataset.get_loader(epoch=int(self.epoch))
             barrier()
@@ -791,6 +807,26 @@ class Trainer:
                 self.scaler.step(self.optim.optimizer)
                 self.scaler.update()
 
+                def collapse_tpos(t):
+                    # [T,1,1,64] -> [T,64]; if it's already [T,64], return as-is
+                    return t.view(t.size(0), t.size(-1)) if (t.dim()==4 and t.size(1)==1 and t.size(2)==1) else t
+
+                if get_rank() == 0 and self.steps[phase] % 50 == 0:
+                    with torch.no_grad():
+                        mod = unwrap_ddp_if_wrapped(self.model)
+                        t = getattr(mod, "maskmem_tpos_enc")  # [T,1,1,64] or [T,64]
+                        arr = collapse_tpos(t).detach().cpu()   # [T,64]
+                        # rows = min(7, arr.size(0))
+                        rows = arr.size(0)
+                        vals = arr[:rows, 0].tolist()           # first element (index 0) from each row
+                        print(f"[step {self.steps[phase]}] maskmem_tpos_enc first elem per row 0..{rows-1}: "
+                            + ", ".join(f"{v:.6f}" for v in vals))
+
+                mod = unwrap_ddp_if_wrapped(self.model)
+                if hasattr(self, "_tpos_ref") and hasattr(mod, "maskmem_tpos_enc"):
+                    with torch.no_grad():
+                        mod.maskmem_tpos_enc[: self._tpos_ref.shape[0]].copy_(self._tpos_ref)
+
                 # measure elapsed time
                 batch_time_meter.update(time.time() - end)
                 end = time.time()
@@ -1020,7 +1056,9 @@ class Trainer:
             instantiate(self.optim_conf.gradient_logger) if self.optim_conf else None
         )
 
+        freeze_first_memory_tokens(self.model, n_tokens=7)
         logging.info("Finished setting up components: Model, loss, optim, meters etc.")
+        
 
     def _construct_optimizers(self):
         self.optim = construct_optimizer(

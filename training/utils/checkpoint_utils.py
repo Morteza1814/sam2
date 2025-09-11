@@ -327,35 +327,220 @@ def check_load_state_dict_errors(
             raise KeyError(err)
 
 
+# def load_state_dict_into_model(
+#     state_dict: Dict,
+#     model: nn.Module,
+#     strict: bool = True,
+#     ignore_missing_keys: List[str] = None,
+#     ignore_unexpected_keys: List[str] = None,
+#     checkpoint_kernels: List[Callable] = None,
+# ):
+#     """
+#     Loads a state dict into the given model.
+
+#     Args:
+#         state_dict: A dictionary containing the model's
+#             state dict, or a subset if strict is False
+#         model: Model to load the checkpoint weights into
+#         strict: raise if the state_dict has missing state keys
+#         ignore_missing_keys: unix pattern of keys to ignore
+#     """
+#     # Apply kernels
+#     if checkpoint_kernels is not None:
+#         for f in checkpoint_kernels:
+#             state_dict = f(state_dict=state_dict)
+#     # state_dict.pop("maskmem_tpos_enc", None)
+#     missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+
+#     # check_load_state_dict_errors(
+#     #     missing_keys,
+#     #     unexpected_keys,
+#     #     strict=strict,
+#     #     ignore_missing_keys=ignore_missing_keys,
+#     #     ignore_unexpected_keys=ignore_unexpected_keys,
+#     # )
+#     return model
+
+# training/utils/checkpoint_utils.py
+
+import torch
+import torch.nn.functional as F
+from typing import Dict, List, Callable
+
+def _find_key_ending_with(d: Dict[str, torch.Tensor], suffix: str):
+    for k in d.keys():
+        if k.endswith(suffix):
+            return k
+    return None
+
+def _expand_linear_1d_table(old_2d: torch.Tensor, new_len: int) -> torch.Tensor:
+    """
+    old_2d: [old_len, dim]
+    returns: [new_len, dim]
+    Keeps [:old_len] EXACT; fills tail via linear interp in index space.
+    """
+    old_len, dim = old_2d.shape
+    if new_len == old_len:
+        return old_2d
+    src = old_2d.T.unsqueeze(0)                        # [1, dim, old_len]
+    up  = F.interpolate(src, size=new_len, mode="linear", align_corners=True)
+    out = up.squeeze(0).T                              # [new_len, dim]
+    out[:old_len] = old_2d                             # avoid tiny interp drift
+    return out
+
+def _copy_first_k_rows_maskmem_in_state_dict(
+    state_dict: Dict[str, torch.Tensor],
+    model: torch.nn.Module,
+    k: int = 7,
+) -> Dict[str, torch.Tensor]:
+    ck_key = _find_key_ending_with(state_dict, "maskmem_tpos_enc")
+    if ck_key is None:
+        return state_dict
+
+    model_sd = model.state_dict()
+    md_key = _find_key_ending_with(model_sd, "maskmem_tpos_enc")
+    if md_key is None:
+        return state_dict
+
+    ck_t = state_dict[ck_key]   # e.g., [7, 1, 1, D] (checkpoint)
+    md_t = model_sd[md_key]     # e.g., [15, 1, 1, D] (model)
+
+    # Expect [T,1,1,D]
+    assert ck_t.dim() == 4 and ck_t.shape[1] == 1 and ck_t.shape[2] == 1, \
+        f"Unexpected maskmem_tpos_enc shape in ckpt: {ck_t.shape}"
+    assert md_t.dim() == 4 and md_t.shape[1] == 1 and md_t.shape[2] == 1, \
+        f"Unexpected maskmem_tpos_enc shape in model: {md_t.shape}"
+    assert ck_t.shape[-1] == md_t.shape[-1], \
+        f"Dim mismatch: ckpt {ck_t.shape} vs model {md_t.shape}"
+
+    old_len, dim = ck_t.shape[0], ck_t.shape[-1]
+    new_len = md_t.shape[0]
+
+    # Work in 2D for convenience
+    ck_2d = ck_t.view(old_len, dim).to(dtype=md_t.dtype, device=ck_t.device)
+    md_2d = md_t.view(new_len, dim).to(dtype=md_t.dtype, device=ck_t.device)
+
+    # Copy only the first n rows
+    n = min(k, old_len, new_len)
+    out_2d = md_2d.clone()      # start from model's params
+    out_2d[:n] = ck_2d[:n]      # overwrite first n rows with checkpoint
+
+    state_dict[ck_key] = out_2d.view(new_len, 1, 1, dim)
+    return state_dict
+
+def _resize_maskmem_in_state_dict(state_dict: Dict[str, torch.Tensor],
+                                  model: torch.nn.Module) -> Dict[str, torch.Tensor]:
+    ck_key = _find_key_ending_with(state_dict, "maskmem_tpos_enc")
+    if ck_key is None:
+        return state_dict
+
+    model_sd = model.state_dict()
+    md_key   = _find_key_ending_with(model_sd, "maskmem_tpos_enc")
+    if md_key is None:
+        return state_dict
+
+    ck_t = state_dict[ck_key]            # e.g., [7, 1, 1, 64]
+    md_t = model_sd[md_key]              # e.g., [15, 1, 1, 64]
+
+    # print(f"Resizing maskmem_tpos_enc: ckpt {ck_t.shape} -> model {md_t.shape}")
+    # print("ckpt:", ck_t)
+    # print("model:", md_t)
+    if ck_t.shape == md_t.shape:
+        return state_dict
+
+    # Expect [T, 1, 1, D]; collapse to [T, D], resize, then restore shape.
+    assert ck_t.dim() == 4 and ck_t.shape[1] == 1 and ck_t.shape[2] == 1, \
+        f"Unexpected maskmem_tpos_enc shape: {ck_t.shape}"
+    old_len, _, _, dim = ck_t.shape
+    new_len, _, _, dim2 = md_t.shape
+    assert dim == dim2, f"Dim mismatch: ckpt {ck_t.shape} vs model {md_t.shape}"
+
+    old_2d = ck_t.view(old_len, dim)
+    new_2d = _expand_linear_1d_table(old_2d, new_len).to(dtype=ck_t.dtype, device=ck_t.device)
+    # print("Original maskmem_tpos_enc:", old_2d)
+    # print("Resized maskmem_tpos_enc:", new_2d)
+    new_4d = new_2d.view(new_len, 1, 1, dim)
+    state_dict[ck_key] = new_4d
+    return state_dict
+
+def _collapse_tpos(t: torch.Tensor) -> torch.Tensor:
+    """
+    Converts [T,1,1,D] -> [T,D] (or passes through [T,D]).
+    """
+    if t.dim() == 4 and t.size(1) == 1 and t.size(2) == 1:
+        return t.contiguous().view(t.size(0), t.size(3))
+    if t.dim() == 2:
+        return t
+    # Best-effort fallback: squeeze singletons, then take last dim as feature dim.
+    t2 = t.squeeze()
+    if t2.dim() == 2:
+        return t2
+    raise AssertionError(f"Unexpected maskmem_tpos_enc shape {tuple(t.shape)}")
+
+def _log_maskmem_first_col(tag: str, tens: torch.Tensor):
+    arr = _collapse_tpos(tens).detach().float().cpu()   # [T, D]
+    rows = arr.size(0)
+    vals = arr[:, 0].tolist()                           # first feature per row
+    print(
+        f"{tag} maskmem_tpos_enc first elem per row 0..{rows-1}: "
+        + ", ".join(f"{v:.6f}" for v in vals)
+    )
+    
 def load_state_dict_into_model(
     state_dict: Dict,
-    model: nn.Module,
+    model: torch.nn.Module,
     strict: bool = True,
     ignore_missing_keys: List[str] = None,
     ignore_unexpected_keys: List[str] = None,
     checkpoint_kernels: List[Callable] = None,
 ):
-    """
-    Loads a state dict into the given model.
+        # Identify keys early so we can log meaningfully.
+    md_key_pre = _find_key_ending_with(model.state_dict(), "maskmem_tpos_enc")
+    ck_key_pre = _find_key_ending_with(state_dict,         "maskmem_tpos_enc")
 
-    Args:
-        state_dict: A dictionary containing the model's
-            state dict, or a subset if strict is False
-        model: Model to load the checkpoint weights into
-        strict: raise if the state_dict has missing state keys
-        ignore_missing_keys: unix pattern of keys to ignore
-    """
-    # Apply kernels
+    # --- BEFORE LOAD (model’s current values)
+    if md_key_pre is not None:
+        with torch.no_grad():
+            _log_maskmem_first_col("[BEFORE LOAD]", model.state_dict()[md_key_pre])
+            
+    # Apply user kernels first (if any)
     if checkpoint_kernels is not None:
         for f in checkpoint_kernels:
             state_dict = f(state_dict=state_dict)
-    missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+    
+    ckpt_raw = None
+    if ck_key_pre is not None:
+        ckpt_raw = state_dict[ck_key_pre]   
 
-    check_load_state_dict_errors(
-        missing_keys,
-        unexpected_keys,
-        strict=strict,
-        ignore_missing_keys=ignore_missing_keys,
-        ignore_unexpected_keys=ignore_unexpected_keys,
-    )
+    # *** Shape-aware fix for maskmem_tpos_enc ***
+    state_dict = _resize_maskmem_in_state_dict(state_dict, model)
+    # state_dict = _copy_first_k_rows_maskmem_in_state_dict(state_dict, model, k=7)
+
+
+    ck_key_post = _find_key_ending_with(state_dict, "maskmem_tpos_enc")
+
+    # --- CKPT views (raw & resized) for visibility
+    if ck_key_post is not None:
+        with torch.no_grad():
+            if ckpt_raw is not None:
+                _log_maskmem_first_col("[CKPT RAW     ]", ckpt_raw)
+            _log_maskmem_first_col("[CKPT RESIZED ]", state_dict[ck_key_post])
+
+    # Now load; shapes match, so strict can stay True if you want
+    missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=strict)
+
+    md_key_post = _find_key_ending_with(model.state_dict(), "maskmem_tpos_enc")
+    if md_key_post is not None:
+        with torch.no_grad():
+            _log_maskmem_first_col("[AFTER LOAD   ]", model.state_dict()[md_key_post])
+    
+    # (Optionally keep your checks enabled)
+    # check_load_state_dict_errors(
+    #     missing_keys,
+    #     unexpected_keys,
+    #     strict=strict,
+    #     ignore_missing_keys=ignore_missing_keys,
+    #     ignore_unexpected_keys=ignore_unexpected_keys,
+    # )
+
     return model
